@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>赛博狗子完整更新日志</title>
+  <meta name="description" content="赛博狗子 Android 测试版完整更新日志" />
+  <style>
+    :root {
+      --bg-1: #efe7d9;
+      --bg-2: #f8f2e8;
+      --bg-3: #dfe8dc;
+      --panel: rgba(255, 251, 244, 0.92);
+      --panel-strong: rgba(255, 248, 237, 0.78);
+      --ink: #2f241c;
+      --muted: #76685b;
+      --line: rgba(84, 60, 42, 0.14);
+      --accent: #b56545;
+      --accent-dark: #8f4d35;
+      --accent-soft: rgba(181, 101, 69, 0.14);
+      --green: #657b55;
+      --green-soft: rgba(101, 123, 85, 0.14);
+      --shadow: 0 22px 70px rgba(85, 56, 31, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      min-width: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      position: relative;
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      padding: max(18px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      color: var(--ink);
+      font-family: ui-serif, "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.76), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(181, 101, 69, 0.12), transparent 28%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      width: min(64vw, 420px);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+
+    body::before {
+      top: -120px;
+      right: max(-130px, -16vw);
+      background: radial-gradient(circle, rgba(101, 123, 85, 0.16), transparent 66%);
+    }
+
+    body::after {
+      left: max(-120px, -14vw);
+      bottom: -140px;
+      background: radial-gradient(circle, rgba(181, 101, 69, 0.13), transparent 68%);
+    }
+
+    .page {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .hero {
+      padding: clamp(22px, 5vw, 34px) clamp(18px, 5vw, 32px) 22px;
+      background:
+        radial-gradient(circle at top right, rgba(101, 123, 85, 0.16), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.42), transparent);
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      margin-bottom: 18px;
+    }
+
+    .mark {
+      flex: 0 0 auto;
+      width: 64px;
+      height: 64px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: rgba(255, 249, 238, 0.64);
+      border: 1px solid rgba(255, 255, 255, 0.56);
+      box-shadow: 0 14px 32px rgba(101, 123, 85, 0.22);
+    }
+
+    .mark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .title-wrap { min-width: 0; }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 7vw, 38px);
+      letter-spacing: -0.03em;
+      line-height: 1.16;
+    }
+
+    .subtitle {
+      max-width: 640px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.82;
+      font-size: 15px;
+    }
+
+    .body {
+      padding: 0 clamp(18px, 5vw, 32px) 30px;
+    }
+
+    .download {
+      display: block;
+      margin: 22px 0 18px;
+      padding: 17px 18px;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      text-decoration: none;
+      text-align: center;
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: 0.02em;
+      box-shadow: 0 16px 34px rgba(181, 101, 69, 0.28);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .download:active { transform: translateY(1px); }
+
+    .version {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.34);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .section {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 11px;
+      font-size: 17px;
+    }
+
+    ol,
+    ul {
+      margin: 0;
+      padding-left: 1.25em;
+      color: var(--muted);
+      line-height: 1.78;
+      font-size: 14px;
+    }
+
+    li + li { margin-top: 3px; }
+
+    .update-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .update-card {
+      padding: 14px 15px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--panel-strong);
+    }
+
+    .update-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .note {
+      margin: 14px 0 0;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: #6d4a39;
+      line-height: 1.72;
+      font-size: 13px;
+    }
+
+    .soft-note {
+      background: var(--green-soft);
+      color: #4f6546;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: rgba(47, 36, 28, 0.48);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .text-link {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .text-link:hover { text-decoration: underline; }
+
+    .changelog-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .ghost-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .loading-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 14px;
+    }
+
+    a { color: var(--accent-dark); }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 6px;
+      background: rgba(47, 36, 28, 0.08);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 12px;
+        display: block;
+      }
+
+      .card { border-radius: 26px; }
+
+      .logo-row {
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .mark {
+        width: 56px;
+        height: 56px;
+        border-radius: 20px;
+      }
+
+      .version {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .download {
+        margin-top: 18px;
+        padding: 16px;
+      }
+
+      .update-card { padding: 13px; }
+    }
+</style>
+</head>
+<body>
+  <main class="page">
+    <article class="card">
+      <section class="hero">
+        <div class="logo-row">
+          <div class="mark" aria-hidden="true">
+            <img src="./CyberDoggo-logo.png" alt="" />
+          </div>
+          <div class="title-wrap">
+            <p class="eyebrow">Changelog</p>
+            <h1>完整更新日志</h1>
+          </div>
+        </div>
+        <p class="subtitle">
+          这里会自动读取 <code>CHANGELOG.md</code>。下载页面只显示最近两版，完整记录会保留在这里。
+        </p>
+      </section>
+
+      <section class="body">
+        <div class="changelog-actions">
+          <a class="ghost-link" href="./index.html">← 返回下载页</a>
+          <a class="ghost-link" href="./CHANGELOG.md">查看原始 Markdown</a>
+        </div>
+
+        <section class="section">
+          <h2>全部版本</h2>
+          <div id="allUpdates" class="update-group">
+            <p class="loading-text">正在读取更新日志……</p>
+          </div>
+        </section>
+
+        <p class="footer">Cyber Doggo · private test build</p>
+      </section>
+    </article>
+  </main>
+
+  <script>
+
+    const CHANGELOG_URL = "./CHANGELOG.md";
+
+    function parseChangelog(markdown) {
+      const lines = markdown.split(/\r?\n/);
+      const versions = [];
+      let current = null;
+      let currentSection = null;
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+
+        if (!line) {
+          continue;
+        }
+
+        const versionMatch = line.match(/^##\s+(.+?)\s*[—-]\s*(.+)$/);
+        if (versionMatch) {
+          current = {
+            title: versionMatch[1].trim(),
+            date: versionMatch[2].trim(),
+            sections: [],
+            bullets: [],
+          };
+          versions.push(current);
+          currentSection = null;
+          continue;
+        }
+
+        if (!current) {
+          continue;
+        }
+
+        const sectionMatch = line.match(/^###\s+(.+)$/);
+        if (sectionMatch) {
+          currentSection = {
+            title: sectionMatch[1].trim(),
+            bullets: [],
+          };
+          current.sections.push(currentSection);
+          continue;
+        }
+
+        const bulletMatch = line.match(/^[-*]\s+(.+)$/);
+        if (bulletMatch) {
+          const bullet = bulletMatch[1].trim();
+          if (currentSection) {
+            currentSection.bullets.push(bullet);
+          } else {
+            current.bullets.push(bullet);
+          }
+        }
+      }
+
+      return versions;
+    }
+
+    function createBulletList(items) {
+      const ul = document.createElement("ul");
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+
+    async function loadChangelog() {
+      const response = await fetch(CHANGELOG_URL, { cache: "no-cache" });
+      if (!response.ok) {
+        throw new Error(`无法读取更新日志：${response.status}`);
+      }
+      return parseChangelog(await response.text());
+    }
+
+
+    function renderAllUpdates(versions) {
+      const container = document.getElementById("allUpdates");
+      container.innerHTML = "";
+
+      versions.forEach((version) => {
+        const card = document.createElement("section");
+        card.className = "update-card";
+
+        const title = document.createElement("h3");
+        title.textContent = `${version.title} · ${version.date}`;
+        card.appendChild(title);
+
+        if (version.bullets.length) {
+          card.appendChild(createBulletList(version.bullets));
+        }
+
+        version.sections.forEach((section) => {
+          const sectionTitle = document.createElement("h3");
+          sectionTitle.textContent = section.title;
+          sectionTitle.style.marginTop = "12px";
+          card.appendChild(sectionTitle);
+          card.appendChild(createBulletList(section.bullets));
+        });
+
+        container.appendChild(card);
+      });
+
+      if (!container.children.length) {
+        const empty = document.createElement("p");
+        empty.className = "loading-text";
+        empty.textContent = "暂时没有读取到更新记录。";
+        container.appendChild(empty);
+      }
+    }
+
+    loadChangelog()
+      .then(renderAllUpdates)
+      .catch((error) => {
+        const container = document.getElementById("allUpdates");
+        container.innerHTML = "";
+        const fallback = document.createElement("p");
+        fallback.className = "loading-text";
+        fallback.textContent = `${error.message}。请确认 CHANGELOG.md 与本页面在同一目录。`;
+        container.appendChild(fallback);
+      });
+  </script>
+</body>
+</html>
