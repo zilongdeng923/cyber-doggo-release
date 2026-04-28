@@ -11,7 +11,7 @@ Open the GitHub Pages site for this repository to download the latest build.
 Current version:
 
 ```text
-v0.2.8
+v0.3.0
 ```
 
 Available builds:
@@ -25,7 +25,7 @@ If you already have an older version installed, install the new version directly
 
 The game stores progress locally. Before reinstalling or changing devices, use the in-game backup or save transfer tools.
 
-The current test build also includes a local test quota system for author-provided AI usage. The quota is for testing only and may change in future versions.
+The current test build includes a local test quota system for author-provided AI usage. In v0.3.0, old test quota pools are migrated once to the new ¥1.00 test quota rule. The quota is for testing only and may change in future versions.
 
 ## Changelog
 
