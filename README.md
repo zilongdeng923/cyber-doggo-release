@@ -1,38 +1,38 @@
-# Cyber Doggo Test Builds
+# Cyber Doggo 下载页
 
-This repository hosts the download page for **Cyber Doggo** test builds.
+这里是 **Cyber Doggo（赛博狗子）** 的下载页面仓库。
 
-Cyber Doggo is a small companion game about living with a digital dog, keeping daily records, going on AI-generated adventures, collecting items, and gradually building shared memories.
+赛博狗子是一款陪伴向的小游戏。你会和一只数字小狗一起生活：照顾它、阅读它写下的日记、带它外出冒险、收集物品，并一点点积累只属于你们的共同回忆。
 
-## Downloads
+## 下载方式
 
-Open the GitHub Pages site for this repository to download the latest build.
+请打开本仓库对应的 GitHub Pages 页面，下载最新版本。
 
-Current version:
+当前版本：
 
 ```text
-v0.3.0
+v0.3.2
 ```
 
-Available builds:
+可下载版本：
 
 - Android APK
-- Windows EXE installer
+- Windows EXE
 
-If you already have an older version installed, install the new version directly over it. Do **not** uninstall first unless you have already backed up your save.
+如果你已经安装过旧版本，建议直接覆盖安装。除非你已经提前备份存档，否则不要先卸载旧版。
 
-## Save and quota notes
+## 存档说明
 
-The game stores progress locally. Before reinstalling or changing devices, use the in-game backup or save transfer tools.
+游戏进度保存在本地。更换设备、重装游戏或进行大版本更新前，建议先使用游戏里的备份或存档转移功能。
 
-The current test build includes a local test quota system for author-provided AI usage. In v0.3.0, old test quota pools are migrated once to the new ¥1.00 test quota rule. The quota is for testing only and may change in future versions.
+## 更新说明
 
-## Changelog
-
-The latest two versions are shown on the download page. The full changelog is available in:
+下载页会显示最近的版本更新内容，完整记录可查看：
 
 ```text
 CHANGELOG.md
 ```
 
-and on the changelog page.
+## 项目地址
+
+https://github.com/zilongdeng923/cyber-doggo-release

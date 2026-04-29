@@ -1,0 +1,14 @@
+{
+  "latestVersion": "0.3.2",
+  "minRecommendedVersion": "0.3.1",
+  "releaseDate": "2026-04-29",
+  "critical": false,
+  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.2/cyber-doggo-android-v0.3.2.apk",
+  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.2/cyber-doggo-windows-v0.3.2.exe",
+  "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/",
+  "notes": [
+    "新增启动时的更新检查，发现新版本时会在游戏内提醒你。",
+    "延续 v0.3.1 已测试通过的主题气泡弹窗体验。",
+    "如果网络暂时不可用，更新检查会静默跳过，不影响游戏。"
+  ]
+}
