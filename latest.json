@@ -1,15 +1,14 @@
 {
-  "latestVersion": "0.3.4",
-  "minRecommendedVersion": "0.3.2",
+  "latestVersion": "0.3.5",
+  "minRecommendedVersion": "0.3.5",
   "releaseDate": "2026-04-30",
-  "critical": false,
-  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.4/cyber-doggo-android-v0.3.4.apk",
-  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.4/cyber-doggo-windows-v0.3.4.exe",
+  "critical": true,
+  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.5/cyber-doggo-android-v0.3.5.apk",
+  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.5/cyber-doggo-windows-v0.3.5.exe",
   "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/",
   "notes": [
-    "记忆系统升级：日记、周记、回忆和旧故事整理得更稳定。",
-    "修复历史日记补写时可能写错日期的问题。",
-    "Android 版同步新的记忆生成接口，手机端也能使用新版记忆结构。",
-    "建议更新前先备份存档，旧版本通常可以直接覆盖安装。"
+    "重要修复：Android 版存档分享功能已恢复。",
+    "修复点击分享备份时可能出现 Desktop bridge unavailable 的问题。",
+    "这是建议尽快安装的热修复版本。更新前仍建议先备份存档。"
   ]
 }
