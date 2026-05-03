@@ -1,14 +1,15 @@
 {
-  "latestVersion": "0.3.5",
-  "minRecommendedVersion": "0.3.5",
-  "releaseDate": "2026-04-30",
+  "latestVersion": "0.3.6",
+  "minRecommendedVersion": "0.3.6",
+  "releaseDate": "2026-05-04",
   "critical": true,
-  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.5/cyber-doggo-android-v0.3.5.apk",
-  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.3.5/cyber-doggo-windows-v0.3.5.exe",
-  "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/",
+  "androidUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
+  "windowsUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
+  "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
   "notes": [
-    "重要修复：Android 版存档分享功能已恢复。",
-    "修复点击分享备份时可能出现 Desktop bridge unavailable 的问题。",
-    "这是建议尽快安装的热修复版本。更新前仍建议先备份存档。"
+    "开发公告：0.4.0「三模块合龙」版本正在开发中。",
+    "该版本会对游戏底层代码进行重构，并加入大量新功能。",
+    "为了避免旧版本继续推进剧情后影响新版迁移、记忆连续性或体验断层问题，建议旧版本玩家暂时不要进行每日冒险推动剧情发展。",
+    "在新版发布前，可以每天进行最基础的上线照料。旧存档不需要删除，正式更新前建议先备份存档。"
   ]
 }
