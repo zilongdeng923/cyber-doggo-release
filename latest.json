@@ -1,15 +1,15 @@
 {
-  "latestVersion": "0.3.6",
-  "minRecommendedVersion": "0.3.6",
+  "latestVersion": "0.4.0",
+  "minRecommendedVersion": "0.4.0",
   "releaseDate": "2026-05-04",
   "critical": true,
-  "androidUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
-  "windowsUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
-  "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/notice-0.4.0.html",
+  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.0/cyber-doggo-android-v0.4.0.apk",
+  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.0/cyber-doggo-windows-v0.4.0.exe",
+  "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/index.html",
   "notes": [
-    "开发公告：0.4.0「三模块合龙」版本正在开发中。",
-    "该版本会对游戏底层代码进行重构，并加入大量新功能。",
-    "为了避免旧版本继续推进剧情后影响新版迁移、记忆连续性或体验断层问题，建议旧版本玩家暂时不要进行每日冒险推动剧情发展。",
-    "在新版发布前，可以每天进行最基础的上线照料。旧存档不需要删除，正式更新前建议先备份存档。"
+    "0.4.0『三模块合龙』版本已发布：故事、记忆与人格系统现在会更紧密地互相影响。",
+    "本版加入更完整的日记、周记、回忆、记忆锚点、冷档案与 24 维人格成长管线。",
+    "修复 Android 存档分享、回忆/日记人格结算、进入下一天加载遮罩、物品描述修复和版本号等问题。",
+    "这是大型底层更新。更新前请先在游戏内导出或分享备份存档，然后再覆盖安装新版。"
   ]
 }
