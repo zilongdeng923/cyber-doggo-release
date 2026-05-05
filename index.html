@@ -1542,6 +1542,38 @@
   </main>
 
   <script>
+    const INTRO_DISMISSED_KEY = "cyber-doggo-release-intro-dismissed";
+
+    function shouldSkipIntro() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("skipIntro") === "1") return true;
+        if (window.sessionStorage.getItem(INTRO_DISMISSED_KEY) === "1") return true;
+        if (document.referrer) {
+          const referrerUrl = new URL(document.referrer);
+          if (/changelog\.html$/.test(referrerUrl.pathname)) return true;
+        }
+      } catch (_error) {}
+      return false;
+    }
+
+    function markIntroDismissed() {
+      try {
+        window.sessionStorage.setItem(INTRO_DISMISSED_KEY, "1");
+      } catch (_error) {}
+    }
+
+    if (shouldSkipIntro()) {
+      document.body.classList.add("intro-dismissed");
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("skipIntro")) {
+          url.searchParams.delete("skipIntro");
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+        }
+      } catch (_error) {}
+    }
+
     function finishLoading() {
       setTimeout(() => document.body.classList.add("loaded"), 1200);
     }
@@ -1551,6 +1583,7 @@
 
 
     function enterDownloadPage() {
+      markIntroDismissed();
       document.body.classList.add("intro-dismissed");
 
       setTimeout(() => {
