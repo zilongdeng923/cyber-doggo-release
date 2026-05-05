@@ -731,8 +731,12 @@
   </main>
 
   <script>
-    window.addEventListener("DOMContentLoaded", () => setTimeout(() => document.body.classList.add("loaded"), 520));
-    window.addEventListener("load", () => document.body.classList.add("loaded"));
+    function finishLoading() {
+      setTimeout(() => document.body.classList.add("loaded"), 1200);
+    }
+    
+    window.addEventListener("DOMContentLoaded", finishLoading);
+    window.addEventListener("load", finishLoading);
 
     const CHANGELOG_URL = "./CHANGELOG.md";
 
