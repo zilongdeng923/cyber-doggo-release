@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>赛博狗子下载页</title>
-  <meta name="description" content="Cyber Doggo 是一款玩家与一只小狗一起生活的电子宠物游戏。下载 Android 与 Windows 测试版。" />
+  <meta name="description" content="Cyber Doggo 是一款关于时间、记忆以及日记的电子宠物游戏。下载 Android 与 Windows 测试版。" />
   <style>
     :root {
       --bg-1: #efe7d9;
@@ -643,6 +643,349 @@
 
       .update-card { padding: 13px; }
     }
+
+    .intro-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 18;
+      display: grid;
+      place-items: center;
+      padding: max(18px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(22px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.76), transparent 32%),
+        radial-gradient(circle at 82% 72%, rgba(101, 123, 85, 0.14), transparent 30%),
+        radial-gradient(circle at 18% 78%, rgba(181, 101, 69, 0.11), transparent 28%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.78s ease, visibility 0.78s ease;
+    }
+
+    body.loaded .intro-gate {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    body.intro-dismissed .intro-gate {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-gate-card {
+      position: relative;
+      width: min(100%, 680px);
+      min-height: min(72vh, 620px);
+      display: grid;
+      align-content: center;
+      padding: clamp(28px, 6vw, 52px);
+      border: 1px solid rgba(84, 60, 42, 0.12);
+      border-radius: 38px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.56), rgba(255,248,237,0.72)),
+        radial-gradient(circle at top right, rgba(101,123,85,0.12), transparent 48%),
+        var(--panel);
+      box-shadow: 0 26px 80px rgba(85, 56, 31, 0.18);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .intro-gate-card::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(101, 123, 85, 0.12);
+      border-radius: 28px;
+      pointer-events: none;
+    }
+
+    .intro-gate-card::after {
+      content: "diary";
+      position: absolute;
+      right: clamp(18px, 5vw, 36px);
+      bottom: -18px;
+      color: rgba(101, 123, 85, 0.075);
+      font-size: clamp(72px, 18vw, 118px);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      font-family: Georgia, serif;
+      pointer-events: none;
+    }
+
+    .cover-orbit,
+    .cover-paper,
+    .cover-paper-small {
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cover-orbit {
+      width: 170px;
+      height: 170px;
+      right: -42px;
+      top: 42px;
+      border: 1px solid rgba(101, 123, 85, 0.12);
+      border-radius: 999px;
+    }
+
+    .cover-orbit::before,
+    .cover-orbit::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(101, 123, 85, 0.18);
+    }
+
+    .cover-orbit::before {
+      width: 8px;
+      height: 8px;
+      left: 30px;
+      top: 18px;
+    }
+
+    .cover-orbit::after {
+      width: 5px;
+      height: 5px;
+      right: 34px;
+      bottom: 26px;
+      background: rgba(181, 101, 69, 0.18);
+    }
+
+    .cover-paper {
+      width: 92px;
+      height: 118px;
+      left: -18px;
+      bottom: 58px;
+      border-radius: 18px;
+      border: 1px solid rgba(101, 123, 85, 0.13);
+      background: rgba(255, 252, 246, 0.50);
+      transform: rotate(-8deg);
+      box-shadow: 0 18px 42px rgba(85, 56, 31, 0.08);
+    }
+
+    .cover-paper::before,
+    .cover-paper::after,
+    .cover-paper-small::before,
+    .cover-paper-small::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      height: 1px;
+      background: rgba(101, 123, 85, 0.16);
+      border-radius: 999px;
+    }
+
+    .cover-paper::before { top: 35px; }
+    .cover-paper::after { top: 55px; right: 30px; }
+
+    .cover-paper-small {
+      width: 62px;
+      height: 78px;
+      right: 76px;
+      bottom: 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(181, 101, 69, 0.12);
+      background: rgba(255, 252, 246, 0.38);
+      transform: rotate(10deg);
+    }
+
+    .cover-paper-small::before { top: 28px; }
+    .cover-paper-small::after { top: 45px; right: 26px; }
+
+    .intro-cover-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .intro-cover-mark {
+      width: 76px;
+      height: 76px;
+      margin-bottom: 18px;
+      border-radius: 26px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: rgba(255, 249, 238, 0.70);
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      box-shadow: 0 18px 42px rgba(101, 123, 85, 0.18);
+    }
+
+    .intro-cover-mark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .intro-gate-kicker {
+      margin: 0 0 11px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .intro-gate-card h2 {
+      margin: 0;
+      max-width: 9em;
+      font-size: clamp(31px, 8vw, 54px);
+      line-height: 1.16;
+      letter-spacing: -0.05em;
+    }
+
+    .intro-gate-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 15px;
+    }
+
+    .intro-cover-lead {
+      max-width: 510px;
+      margin-top: 18px !important;
+    }
+
+    .intro-gate-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .intro-gate-button {
+      border: 0;
+      cursor: pointer;
+      padding: 15px 23px;
+      border-radius: 18px;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      font: inherit;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 16px 34px rgba(181, 101, 69, 0.24);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .intro-gate-button:active {
+      transform: translateY(1px);
+    }
+
+    .intro-gate .memory-strip {
+      justify-content: center;
+      width: min(100%, 430px);
+      margin: 24px auto 0;
+      letter-spacing: 0.16em;
+    }
+
+    .intro-gate .memory-strip::before,
+    .intro-gate .memory-strip::after {
+      flex: 1 1 0;
+      width: auto;
+      min-width: 34px;
+      max-width: 92px;
+      opacity: 0.76;
+    }
+
+    .intro-gate .memory-strip::before {
+      margin-right: 14px;
+    }
+
+    .intro-gate .memory-strip::after {
+      margin-left: 14px;
+    }
+
+    body.loaded:not(.intro-dismissed) .page {
+      filter: blur(8px);
+      transform: scale(0.992);
+      opacity: 0.44;
+      pointer-events: none;
+      transition: filter 0.78s ease, transform 0.78s ease, opacity 0.78s ease;
+    }
+
+    body.intro-dismissed .page {
+      filter: none;
+      transform: none;
+      opacity: 1;
+      transition: filter 0.78s ease, transform 0.78s ease, opacity 0.78s ease;
+    }
+
+    @media (max-width: 560px) {
+      .intro-gate {
+        padding: 12px;
+      }
+
+      .intro-gate-card {
+        min-height: min(78vh, 640px);
+        border-radius: 28px;
+        padding: 30px 22px;
+      }
+
+      .intro-gate-card::before {
+        inset: 12px;
+        border-radius: 22px;
+      }
+
+      .cover-paper {
+        width: 74px;
+        height: 96px;
+        left: -26px;
+        bottom: 44px;
+      }
+
+      .cover-paper-small {
+        right: 32px;
+        bottom: 28px;
+        opacity: 0.62;
+      }
+
+      .cover-orbit {
+        right: -80px;
+        top: 36px;
+      }
+
+      .intro-gate-actions {
+        display: grid;
+        width: 100%;
+      }
+
+      .intro-gate-button {
+        width: 100%;
+      }
+
+      .intro-gate .memory-strip {
+        width: min(100%, 310px);
+        margin-top: 20px;
+        letter-spacing: 0.13em;
+      }
+
+      .intro-gate .memory-strip::before,
+      .intro-gate .memory-strip::after {
+        display: block;
+        min-width: 22px;
+        max-width: 48px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .intro-gate,
+      body.loaded:not(.intro-dismissed) .page,
+      body.intro-dismissed .page {
+        transition: none !important;
+        filter: none !important;
+        transform: none !important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -653,6 +996,35 @@
       <div class="preload-lines"><span></span><span></span><span></span></div>
     </div>
   </div>
+  <section class="intro-gate" id="introGate" aria-labelledby="introGateTitle">
+    <div class="intro-gate-card">
+      <div class="cover-orbit" aria-hidden="true"></div>
+      <div class="cover-paper" aria-hidden="true"></div>
+      <div class="cover-paper-small" aria-hidden="true"></div>
+
+      <div class="intro-cover-content">
+        <div class="intro-cover-mark" aria-hidden="true">
+          <img src="./CyberDoggo-logo.png" alt="" />
+        </div>
+        <p class="intro-gate-kicker">Cyber Doggo</p>
+        <h2 id="introGateTitle">把一些日子留下来</h2>
+        <p class="intro-cover-lead">
+          这是一款关于时间、记忆以及日记的电子宠物游戏。你会和一只小狗一起生活，照顾它，陪它出门，也偶尔翻到它写下的日记。
+        </p>
+
+        <div class="intro-gate-actions">
+          <button class="intro-gate-button" id="enterDownloadButton" type="button">前往下载</button>
+        </div>
+
+        <div class="memory-strip" aria-hidden="true">
+          <span class="memory-chip">时间</span>
+          <span class="memory-chip">记忆</span>
+          <span class="memory-chip">日记</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <main class="page">
     <article class="card">
       <section class="hero">
@@ -671,7 +1043,7 @@
       </section>
 
       <section class="body">
-        <div class="download-grid">
+        <div class="download-grid" id="downloadTarget">
           <a class="download" href="https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.1/cyber-doggo-android-v0.4.1.apk">下载 Android APK</a>
           <a class="download secondary" href="https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.1/cyber-doggo-windows-v0.4.1.exe">下载 Windows EXE</a>
         </div>
@@ -686,12 +1058,12 @@
         <section class="intro-panel" aria-labelledby="aboutGameTitle">
           <p class="intro-kicker">About this game</p>
           <h2 id="aboutGameTitle">和一只小狗一起生活</h2>
-          <p>这是一款关于时间、记忆以及日记的游戏。
+          <p>这是一款关于时间、记忆以及日记的游戏。</p>
           <p>你会和一只小狗一起生活，照顾它，陪它出门，和它一起度过一天又一天。它会偶尔写日记，把某些发生过的事留在自己的记忆里。</p>
           <p>有些日子很普通，有些日子会发生小小的冒险。喂过的饭、摸过的头、带回来的旧物、写下来的日记，都会慢慢变成你和它之间的痕迹。</p>
           <p>一开始，它可能只是屏幕里的一只小狗。后来再翻到某一篇日记，或者看到某件旧物时，你也许会想起那一天发生过什么。</p>
           <p>我希望这个游戏能让更多人重新靠近日记。在开发它的过程中，它就已经慢慢改变了我，也让日记成为了我生活中的一部分。
-这些日记不一要写得很完整，也没有多么华丽的辞藻。有时候只是几句话，或者一天里很小的一点痕迹，就已经足够让一段时间被保留下来。</p>
+这些日记不一定写得很完整，也没有多么华丽的辞藻。有时候只是几句话，或者一天里很小的一点痕迹，就已经足够把一段时间保留下来。</p>
           <div class="memory-strip" aria-hidden="true">
             <span class="memory-chip">时间</span>
             <span class="memory-chip">记忆</span>
@@ -738,6 +1110,23 @@
     
     window.addEventListener("DOMContentLoaded", finishLoading);
     window.addEventListener("load", finishLoading);
+
+
+    function enterDownloadPage() {
+      document.body.classList.add("intro-dismissed");
+
+      setTimeout(() => {
+        const target = document.getElementById("downloadTarget");
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 560);
+    }
+
+    const enterDownloadButton = document.getElementById("enterDownloadButton");
+    if (enterDownloadButton) {
+      enterDownloadButton.addEventListener("click", enterDownloadPage);
+    }
 
     const CHANGELOG_URL = "./CHANGELOG.md";
 
