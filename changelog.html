@@ -88,13 +88,30 @@
     }
 
     .hero {
+      position: relative;
       padding: clamp(22px, 5vw, 34px) clamp(18px, 5vw, 32px) 22px;
       background:
         radial-gradient(circle at top right, rgba(101, 123, 85, 0.16), transparent 42%),
         linear-gradient(180deg, rgba(255,255,255,0.42), transparent);
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "memory";
+      position: absolute;
+      right: 22px;
+      bottom: -18px;
+      color: rgba(101, 123, 85, 0.075);
+      font-size: clamp(64px, 17vw, 108px);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      font-family: Georgia, serif;
+      pointer-events: none;
     }
 
     .logo-row {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       gap: 14px;
@@ -141,6 +158,8 @@
     }
 
     .subtitle {
+      position: relative;
+      z-index: 1;
       max-width: 640px;
       margin: 14px 0 0;
       color: var(--muted);
@@ -151,24 +170,6 @@
     .body {
       padding: 0 clamp(18px, 5vw, 32px) 30px;
     }
-
-    .download {
-      display: block;
-      margin: 22px 0 18px;
-      padding: 17px 18px;
-      border-radius: 20px;
-      color: white;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      text-decoration: none;
-      text-align: center;
-      font-weight: 800;
-      font-size: 17px;
-      letter-spacing: 0.02em;
-      box-shadow: 0 16px 34px rgba(181, 101, 69, 0.28);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .download:active { transform: translateY(1px); }
 
     .version {
       display: grid;
@@ -184,9 +185,25 @@
     }
 
     .section {
+      position: relative;
       margin-top: 22px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.36), rgba(255,248,237,0.54)),
+        radial-gradient(circle at top right, rgba(101,123,85,0.07), transparent 46%);
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(101, 123, 85, 0.18), transparent);
     }
 
     h2 {
@@ -211,10 +228,11 @@
     }
 
     .update-card {
-      padding: 14px 15px;
+      padding: 15px 15px;
       border-radius: 18px;
-      border: 1px solid var(--line);
-      background: var(--panel-strong);
+      border: 1px solid rgba(101, 123, 85, 0.14);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.44), rgba(255,248,237,0.58));
     }
 
     .update-card h3 {
@@ -230,11 +248,6 @@
       color: #6d4a39;
       line-height: 1.72;
       font-size: 13px;
-    }
-
-    .soft-note {
-      background: var(--green-soft);
-      color: #4f6546;
     }
 
     .footer {
@@ -286,6 +299,44 @@
       font-size: 14px;
     }
 
+    .language-toggle {
+      position: fixed;
+      right: max(16px, env(safe-area-inset-right));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 104px;
+      padding: 11px 14px;
+      border: 1px solid rgba(101, 123, 85, 0.22);
+      border-radius: 999px;
+      color: rgba(47, 36, 28, 0.78);
+      background: rgba(255, 251, 244, 0.82);
+      box-shadow: 0 14px 34px rgba(85, 56, 31, 0.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body.lang-en h1,
+    body.lang-en h2,
+    body.lang-en h3 {
+      letter-spacing: -0.02em;
+    }
+
+    body.lang-en .subtitle,
+    body.lang-en .note,
+    body.lang-en ol,
+    body.lang-en ul {
+      line-height: 1.72;
+    }
+
     a { color: var(--accent-dark); }
 
     code {
@@ -319,16 +370,21 @@
         gap: 4px;
       }
 
-      .download {
-        margin-top: 18px;
-        padding: 16px;
-      }
-
       .update-card { padding: 13px; }
+
+      .language-toggle {
+        right: 14px;
+        bottom: 14px;
+        min-width: 96px;
+        padding: 10px 12px;
+        font-size: 11px;
+      }
     }
 </style>
 </head>
 <body>
+  <button class="language-toggle" id="languageToggle" type="button" aria-label="切换语言">Language · CN</button>
+
   <main class="page">
     <article class="card">
       <section class="hero">
@@ -338,35 +394,120 @@
           </div>
           <div class="title-wrap">
             <p class="eyebrow">Changelog</p>
-            <h1>完整更新日志</h1>
+            <h1 data-i18n="hero.title">完整更新日志</h1>
           </div>
         </div>
-        <p class="subtitle">
+        <p class="subtitle" data-i18n="hero.subtitle">
           这里会自动读取 <code>CHANGELOG.md</code>。下载页面只显示最近两版，完整记录会保留在这里。
         </p>
       </section>
 
       <section class="body">
         <div class="changelog-actions">
-          <a class="ghost-link" href="./index.html">← 返回下载页</a>
-          <a class="ghost-link" href="./CHANGELOG.md">查看原始 Markdown</a>
+          <a class="ghost-link" href="./index.html" data-i18n="actions.back">← 返回下载页</a>
+          <a class="ghost-link" id="rawMarkdownLink" href="./CHANGELOG.md" data-i18n="actions.raw">查看原始 Markdown</a>
         </div>
 
         <section class="section">
-          <h2>全部版本</h2>
+          <h2 data-i18n="versions.title">全部版本</h2>
           <div id="allUpdates" class="update-group">
-            <p class="loading-text">正在读取更新日志……</p>
+            <p class="loading-text" data-i18n="versions.loading">正在读取更新日志……</p>
           </div>
         </section>
 
-        <p class="footer">Cyber Doggo · Android / Windows 下载页</p>
+        <p class="footer" data-i18n="footer">Cyber Doggo · a diary game by 夏樟 · Android / Windows</p>
       </section>
     </article>
   </main>
 
   <script>
+    const I18N_TEXT = {
+      zh: {
+        documentTitle: "赛博狗子完整更新日志",
+        description: "赛博狗子 Android 与 Windows 测试版完整更新日志",
+        languageButton: "Language · CN",
+        languageLabel: "切换语言",
+        changelogUrl: "./CHANGELOG.md",
+        rawMarkdown: "./CHANGELOG.md",
+        "hero.title": "完整更新日志",
+        "hero.subtitle": "这里会自动读取 CHANGELOG.md。下载页面只显示最近两版，完整记录会保留在这里。",
+        "actions.back": "← 返回下载页",
+        "actions.raw": "查看原始 Markdown",
+        "versions.title": "全部版本",
+        "versions.loading": "正在读取更新日志……",
+        "versions.empty": "暂时没有读取到更新记录。",
+        "versions.errorPrefix": "请确认 CHANGELOG.md 与本页面在同一目录。",
+        "footer": "Cyber Doggo · a diary game by 夏樟 · Android / Windows"
+      },
+      en: {
+        documentTitle: "Cyber Doggo Full Changelog",
+        description: "Full changelog for the Cyber Doggo Android and Windows test builds.",
+        languageButton: "Language · EN",
+        languageLabel: "Switch language",
+        changelogUrl: "./CHANGELOG.en.md",
+        rawMarkdown: "./CHANGELOG.en.md",
+        "hero.title": "Full Changelog",
+        "hero.subtitle": "This page reads the changelog archive. The download page only shows the two latest versions; the fuller record is kept here.",
+        "actions.back": "← Back to downloads",
+        "actions.raw": "View Markdown source",
+        "versions.title": "All versions",
+        "versions.loading": "Reading changelog…",
+        "versions.empty": "No update records were found yet.",
+        "versions.errorPrefix": "Please make sure the changelog Markdown file is in the same folder as this page.",
+        "footer": "Cyber Doggo · a diary game by 夏樟 · Android / Windows"
+      }
+    };
 
-    const CHANGELOG_URL = "./CHANGELOG.md";
+    let currentLanguage = "zh";
+
+    function getText(key) {
+      return (I18N_TEXT[currentLanguage] && I18N_TEXT[currentLanguage][key]) || I18N_TEXT.zh[key] || "";
+    }
+
+    function applyLanguage(lang) {
+      currentLanguage = lang === "en" ? "en" : "zh";
+      document.documentElement.lang = currentLanguage === "en" ? "en" : "zh-CN";
+      document.body.classList.toggle("lang-en", currentLanguage === "en");
+      document.title = getText("documentTitle");
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) metaDescription.setAttribute("content", getText("description"));
+
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        const value = getText(node.dataset.i18n);
+        if (value) node.textContent = value;
+      });
+
+      const languageToggle = document.getElementById("languageToggle");
+      if (languageToggle) {
+        languageToggle.textContent = getText("languageButton");
+        languageToggle.setAttribute("aria-label", getText("languageLabel"));
+        languageToggle.setAttribute("title", getText("languageLabel"));
+      }
+
+      const rawMarkdownLink = document.getElementById("rawMarkdownLink");
+      if (rawMarkdownLink) rawMarkdownLink.href = getText("rawMarkdown");
+
+      try {
+        window.localStorage.setItem("cyber-doggo-release-page-language", currentLanguage);
+      } catch (_error) {}
+
+      loadChangelog().then(renderAllUpdates).catch(renderChangelogError);
+    }
+
+    function initialiseLanguage() {
+      let saved = "zh";
+      try {
+        saved = window.localStorage.getItem("cyber-doggo-release-page-language") || "zh";
+      } catch (_error) {}
+      applyLanguage(saved === "en" ? "en" : "zh");
+
+      const languageToggle = document.getElementById("languageToggle");
+      if (languageToggle) {
+        languageToggle.addEventListener("click", () => {
+          applyLanguage(currentLanguage === "en" ? "zh" : "en");
+        });
+      }
+    }
 
     function parseChangelog(markdown) {
       const lines = markdown.split(/\r?\n/);
@@ -377,7 +518,7 @@
       for (const rawLine of lines) {
         const line = rawLine.trim();
 
-        if (!line) {
+        if (!line || line.startsWith("# ")) {
           continue;
         }
 
@@ -433,13 +574,12 @@
     }
 
     async function loadChangelog() {
-      const response = await fetch(CHANGELOG_URL, { cache: "no-cache" });
+      const response = await fetch(getText("changelogUrl"), { cache: "no-cache" });
       if (!response.ok) {
         throw new Error(`无法读取更新日志：${response.status}`);
       }
       return parseChangelog(await response.text());
     }
-
 
     function renderAllUpdates(versions) {
       const container = document.getElementById("allUpdates");
@@ -471,21 +611,21 @@
       if (!container.children.length) {
         const empty = document.createElement("p");
         empty.className = "loading-text";
-        empty.textContent = "暂时没有读取到更新记录。";
+        empty.textContent = getText("versions.empty");
         container.appendChild(empty);
       }
     }
 
-    loadChangelog()
-      .then(renderAllUpdates)
-      .catch((error) => {
-        const container = document.getElementById("allUpdates");
-        container.innerHTML = "";
-        const fallback = document.createElement("p");
-        fallback.className = "loading-text";
-        fallback.textContent = `${error.message}。请确认 CHANGELOG.md 与本页面在同一目录。`;
-        container.appendChild(fallback);
-      });
+    function renderChangelogError(error) {
+      const container = document.getElementById("allUpdates");
+      container.innerHTML = "";
+      const fallback = document.createElement("p");
+      fallback.className = "loading-text";
+      fallback.textContent = `${error.message}。${getText("versions.errorPrefix")}`;
+      container.appendChild(fallback);
+    }
+
+    initialiseLanguage();
   </script>
 </body>
 </html>
