@@ -1,15 +1,13 @@
 {
-  "latestVersion": "0.4.0",
-  "minRecommendedVersion": "0.4.0",
-  "releaseDate": "2026-05-04",
+  "latestVersion": "0.4.1",
+  "minRecommendedVersion": "0.4.1",
+  "releaseDate": "2026-05-05",
   "critical": true,
-  "androidUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.0/cyber-doggo-android-v0.4.0.apk",
-  "windowsUrl": "https://github.com/zilongdeng923/cyber-doggo-release/releases/download/v0.4.0/cyber-doggo-windows-v0.4.0.exe",
   "releasePageUrl": "https://zilongdeng923.github.io/cyber-doggo-release/index.html",
   "notes": [
-    "0.4.0『三模块合龙』版本已发布：故事、记忆与人格系统现在会更紧密地互相影响。",
-    "本版加入更完整的日记、周记、回忆、记忆锚点、冷档案与 24 维人格成长管线。",
-    "修复 Android 存档分享、回忆/日记人格结算、进入下一天加载遮罩、物品描述修复和版本号等问题。",
-    "这是大型底层更新。更新前请先在游戏内导出或分享备份存档，然后再覆盖安装新版。"
+    "v0.4.1 是日记、周记、回忆与自然跨天流程的稳定性热修复。",
+    "修复第二天重新打开游戏后，日记提示与真实写入不同步的问题。",
+    "日记、周记和回忆现在采用更清晰的两段式流程：先写下记录，再整理记忆余韵。",
+    "更新前请先导出或分享备份存档，然后直接覆盖安装新版。"
   ]
 }
