@@ -3829,7 +3829,7 @@
         supportHideTyping();
         const detail = error && error.message ? ` (${error.message})` : "";
         await supportAppendSystem((supportLang() === "zh"
-          ? "系统提示：本地 AI 接口暂时不可用，已避免把错误写入人工客服对话。"
+          ? "系统提示：人工客服连接暂时不可用，已避免把错误写入人工客服对话。"
           : "System: the local AI endpoint is currently unavailable; this error was not added to the support chat history.") + detail);
       } finally {
         supportSetBusy(false);
