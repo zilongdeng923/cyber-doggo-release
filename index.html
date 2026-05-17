@@ -2618,7 +2618,7 @@
         "panel.zixiTitle": "梓汐",
         "panel.zixiSubtitle": "发布页客服接线中",
         "status.online": "在线",
-        "status.local": "本地测试",
+        "status.local": "离线",
         "input.placeholder": "请输入关于游戏的问题，或输入转人工…",
         "input.placeholderZixi": "和人工客服说点什么，或问下载 / 版本 / 备份…",
         "input.placeholderConfirm": "再次发送“转人工”确认，或发送“取消”取消。",
@@ -2681,7 +2681,7 @@
         "panel.zixiTitle": "Zixi",
         "panel.zixiSubtitle": "Release-page support",
         "status.online": "Online",
-        "status.local": "Local test",
+        "status.local": "Offline",
         "input.placeholder": "Ask about the game, or type human support…",
         "input.placeholderZixi": "Talk to human support, or ask about downloads / versions / backups…",
         "input.placeholderConfirm": "Type “human support” again to confirm, or “cancel” to cancel.",
@@ -3686,8 +3686,8 @@
 
       if (!ZIXI_API_ENDPOINT) {
         supportAppendMessage("zixi", lang === "zh"
-          ? "我现在还是发布页本地测试模式，所以只能回答下载、版本、备份、当前功能边界这些基础问题。等老板把 Cloudflare 后端接好之后，我就能更自由地聊天了。"
-          : "I am currently running in local release-page test mode, so I can only answer basic questions about downloads, versions, backups, and feature boundaries. Once the Cloudflare backend is connected, I will be able to chat more freely."
+          ? "我现在没有连接到 Cloudflare 或 Vercel 后端，所以只能回答下载、版本、备份、当前功能边界这些基础问题。后端接好之后，我就能更自由地聊天了。"
+          : "I am not connected to the Cloudflare or Vercel backend right now, so I can only answer basic questions about downloads, versions, backups, and feature boundaries. Once the backend is connected, I will be able to chat more freely."
         , { emotion: "apologetic" });
       }
     }
@@ -3750,6 +3750,12 @@
     function supportLightConnectionMessage(light) {
       const zh = supportLang() === "zh";
       const remaining = light && Number.isFinite(Number(light.remainingTokens)) ? Math.max(0, Math.floor(Number(light.remainingTokens))) : 0;
+      const finalClosureDone = !!(light && light.finalClosureDone);
+      if (finalClosureDone && remaining > 0) {
+        return zh
+          ? `人工客服这轮已经完成收线休息。（剩余 ${remaining} tokens）`
+          : `Human support has already ended for this session. (${remaining} tokens remaining)`;
+      }
       return zh
         ? `人工客服今天暂时无法接入。（剩余 ${remaining} tokens）`
         : `Human support is currently unavailable. (${remaining} tokens remaining)`;
