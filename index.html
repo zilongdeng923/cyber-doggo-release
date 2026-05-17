@@ -2601,6 +2601,7 @@
       return endpoints;
     })();
     let ZIXI_API_ENDPOINT = ZIXI_API_ENDPOINTS[0] || "";
+    let supportLightResetPromise = Promise.resolve();
     function supportSwitchToNextApiEndpoint() {
       const currentIndex = ZIXI_API_ENDPOINTS.indexOf(ZIXI_API_ENDPOINT);
       const next = ZIXI_API_ENDPOINTS[currentIndex + 1];
@@ -3718,11 +3719,12 @@
       return ZIXI_API_ENDPOINT.replace(/\/?$/, "/plan");
     }
 
-    function supportZixiLightStateEndpoint() {
-      if (!ZIXI_API_ENDPOINT) return "";
-      if (/\/api\/zixi$/.test(ZIXI_API_ENDPOINT)) return ZIXI_API_ENDPOINT.replace(/\/api\/zixi$/, "/api/light-state");
+    function supportZixiLightStateEndpoint(endpointOverride = ZIXI_API_ENDPOINT) {
+      const apiEndpoint = endpointOverride || "";
+      if (!apiEndpoint) return "";
+      if (/\/api\/zixi$/.test(apiEndpoint)) return apiEndpoint.replace(/\/api\/zixi$/, "/api/light-state");
       try {
-        const url = new URL(ZIXI_API_ENDPOINT, window.location.origin);
+        const url = new URL(apiEndpoint, window.location.origin);
         if (url.pathname.endsWith("/zixi")) {
           url.pathname = url.pathname.replace(/\/zixi$/, "/light-state");
         } else {
@@ -3730,11 +3732,43 @@
         }
         return url.toString();
       } catch (_error) {
-        return ZIXI_API_ENDPOINT.replace(/\/?$/, "/light-state");
+        return apiEndpoint.replace(/\/?$/, "/light-state");
       }
     }
 
+    function supportZixiLightResetEndpoint(endpointOverride = ZIXI_API_ENDPOINT) {
+      const apiEndpoint = endpointOverride || "";
+      if (!apiEndpoint) return "";
+      if (/\/api\/zixi$/.test(apiEndpoint)) return apiEndpoint.replace(/\/api\/zixi$/, "/api/light-reset");
+      try {
+        const url = new URL(apiEndpoint, window.location.origin);
+        if (url.pathname.endsWith("/zixi")) {
+          url.pathname = url.pathname.replace(/\/zixi$/, "/light-reset");
+        } else {
+          url.pathname = url.pathname.replace(/\/?$/, "/light-reset");
+        }
+        return url.toString();
+      } catch (_error) {
+        return apiEndpoint.replace(/\/?$/, "/light-reset");
+      }
+    }
+
+    function supportResetLightForPageLoad() {
+      const endpoints = Array.from(new Set(
+        ZIXI_API_ENDPOINTS
+          .map((endpoint) => supportZixiLightResetEndpoint(endpoint))
+          .filter(Boolean)
+      ));
+      if (!endpoints.length) return;
+      supportLightResetPromise = Promise.allSettled(endpoints.map((endpoint) => fetch(endpoint, {
+        method: "POST",
+        headers: supportApiHeaders(false),
+        keepalive: true
+      })));
+    }
+
     async function supportFetchZixiLightState() {
+      await supportLightResetPromise.catch(() => {});
       const endpoint = supportZixiLightStateEndpoint();
       if (!endpoint) return null;
       try {
@@ -3757,8 +3791,8 @@
           : `Human support has already ended for this session. (${remaining} tokens remaining)`;
       }
       return zh
-        ? `人工客服今天暂时无法接入。（剩余 ${remaining} tokens）`
-        : `Human support is currently unavailable. (${remaining} tokens remaining)`;
+        ? `人工客服这一轮灯火已经用完，刷新页面后可以重新开始一轮。（剩余 ${remaining} tokens）`
+        : `Human support for this page session has ended. Refresh the page to start a new session. (${remaining} tokens remaining)`;
     }
 
     async function supportPlanZixiKnowledge(input, historyForApi = null) {
@@ -3986,6 +4020,7 @@
 
       supportApplyLanguage();
       supportUpdateHeader();
+      supportResetLightForPageLoad();
     }
 
     supportInitWidget();
