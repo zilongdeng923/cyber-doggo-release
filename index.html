@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>赛博狗子下载页</title>
-  <meta name="description" content="Cyber Doggo 是一款关于时间、记忆以及日记的电子宠物游戏。下载 Android 与 Windows 测试版。" />
+  <meta name="description" content="Cyber Doggo 是一款关于时间、记忆、小狗以及日记的电子宠物游戏。下载 Android 与 Windows 测试版。" />
   <style>
     :root {
       --bg-1: #efe7d9;
@@ -1417,6 +1417,631 @@
       }
     }
 
+    /* Zixi / Xibot release-page support widget */
+    .support-widget-launcher {
+      position: fixed;
+      left: max(18px, env(safe-area-inset-left));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 42;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 178px;
+      max-width: calc(100vw - 36px);
+      padding: 10px 14px 10px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 999px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.78), transparent 36%),
+        linear-gradient(145deg, rgba(255, 251, 244, 0.92), rgba(236, 226, 210, 0.82));
+      box-shadow: 0 18px 48px rgba(85, 56, 31, 0.22), 0 3px 12px rgba(101, 123, 85, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      font: inherit;
+    }
+
+    .support-widget-launcher:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 62px rgba(85, 56, 31, 0.26), 0 5px 16px rgba(101, 123, 85, 0.16);
+      border-color: rgba(181, 101, 69, 0.24);
+    }
+
+    .support-widget-launcher[aria-expanded="true"] {
+      transform: translateY(0) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .support-launcher-mark {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      color: #fff8ef;
+      background:
+        radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.28), transparent 34%),
+        linear-gradient(145deg, var(--green), var(--accent-dark));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.26), 0 10px 24px rgba(101, 123, 85, 0.24);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .support-launcher-text {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+      text-align: left;
+      line-height: 1.18;
+    }
+
+    .support-launcher-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .support-launcher-subtitle {
+      color: var(--muted);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .support-panel {
+      position: fixed;
+      left: max(18px, env(safe-area-inset-left));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 43;
+      width: min(392px, calc(100vw - 28px));
+      height: min(620px, calc(100vh - 36px));
+      max-height: 620px;
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.66);
+      border-radius: 30px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 4%, rgba(255, 255, 255, 0.72), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(101, 123, 85, 0.16), transparent 28%),
+        linear-gradient(160deg, rgba(255, 251, 244, 0.96), rgba(239, 231, 217, 0.92));
+      box-shadow: 0 30px 86px rgba(85, 56, 31, 0.30), 0 4px 18px rgba(101, 123, 85, 0.14);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transform-origin: bottom left;
+      animation: supportPanelIn 0.24s ease both;
+    }
+
+    .support-panel[hidden] {
+      display: none !important;
+    }
+
+    .support-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(181, 101, 69, 0.12), transparent 22%, transparent 78%, rgba(101, 123, 85, 0.10)),
+        linear-gradient(180deg, rgba(255,255,255,0.38), transparent 20%);
+      opacity: 0.8;
+    }
+
+    @keyframes supportPanelIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .support-header,
+    .support-messages,
+    .support-quick-actions,
+    .support-compose {
+      position: relative;
+      z-index: 1;
+    }
+
+    .support-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(84, 60, 42, 0.10);
+      background: rgba(255, 251, 244, 0.54);
+    }
+
+    .support-avatar {
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #fff8ef;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.30), transparent 36%),
+        linear-gradient(145deg, var(--green), var(--accent-dark));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 24px rgba(85, 56, 31, 0.16);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+    }
+
+    .support-avatar.zixi-letter {
+      font-family: ui-serif, "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+      font-size: 22px;
+      color: #fff8ef;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.30), transparent 36%),
+        linear-gradient(145deg, #9b755c, var(--accent-dark));
+    }
+
+    .support-avatar.camera-open {
+      background: rgba(255, 248, 237, 0.80);
+      border: 1px solid rgba(255,255,255,0.62);
+      color: transparent;
+    }
+
+    .support-avatar img,
+    .support-avatar-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .support-header-main {
+      min-width: 0;
+      flex: 1;
+      display: grid;
+      gap: 3px;
+    }
+
+    .support-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .support-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .support-status-pill {
+      flex: 0 0 auto;
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(101, 123, 85, 0.12);
+      border: 1px solid rgba(101, 123, 85, 0.12);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 10px;
+      font-weight: 750;
+    }
+
+    .support-subtitle {
+      color: var(--muted);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 12px;
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .support-close {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(84, 60, 42, 0.10);
+      border-radius: 14px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.42);
+      cursor: pointer;
+      font: inherit;
+      font-size: 20px;
+      line-height: 1;
+      transition: background 0.18s ease, transform 0.18s ease, color 0.18s ease;
+    }
+
+    .support-close:hover {
+      color: var(--accent-dark);
+      background: rgba(181, 101, 69, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .support-messages {
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 14px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .support-messages::-webkit-scrollbar { width: 8px; }
+    .support-messages::-webkit-scrollbar-track { background: transparent; }
+    .support-messages::-webkit-scrollbar-thumb {
+      background: rgba(84, 60, 42, 0.14);
+      border-radius: 999px;
+    }
+
+    .support-time-divider {
+      align-self: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: rgba(47, 36, 28, 0.56);
+      background: rgba(255, 255, 255, 0.38);
+      border: 1px solid rgba(84, 60, 42, 0.08);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 11px;
+    }
+
+    .support-system-line {
+      align-self: center;
+      max-width: 86%;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.44);
+      border: 1px solid rgba(84, 60, 42, 0.08);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .support-message {
+      display: flex;
+      align-items: flex-end;
+      gap: 9px;
+      max-width: 100%;
+      animation: supportMessageIn 0.18s ease both;
+    }
+
+    @keyframes supportMessageIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .support-message.user {
+      justify-content: flex-end;
+    }
+
+    .support-message.user .support-avatar {
+      display: none;
+    }
+
+    .support-message.bot,
+    .support-message.zixi {
+      justify-content: flex-start;
+    }
+
+    .support-message .support-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 13px;
+      font-size: 11px;
+      box-shadow: 0 8px 18px rgba(85, 56, 31, 0.12);
+    }
+
+    .support-message .support-avatar.zixi-letter {
+      font-size: 17px;
+    }
+
+    .support-bubble {
+      max-width: min(285px, calc(100% - 48px));
+      padding: 10px 12px;
+      border-radius: 17px;
+      border: 1px solid rgba(84, 60, 42, 0.08);
+      background: rgba(255, 255, 255, 0.52);
+      color: var(--ink);
+      box-shadow: 0 8px 22px rgba(85, 56, 31, 0.08);
+      font-size: 14px;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .support-message.user .support-bubble {
+      color: #fff8ef;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.24), transparent 34%),
+        linear-gradient(145deg, var(--green), #7d5d47);
+      border-color: rgba(255, 255, 255, 0.18);
+      border-bottom-right-radius: 7px;
+    }
+
+    .support-message.bot .support-bubble {
+      border-bottom-left-radius: 7px;
+      background: rgba(255, 255, 255, 0.54);
+    }
+
+    .support-message.zixi .support-bubble {
+      border-bottom-left-radius: 7px;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.70), transparent 42%),
+        rgba(255, 248, 237, 0.70);
+    }
+
+    .support-typing-bubble {
+      min-width: 54px;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .support-typing {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 0;
+    }
+
+    .support-typing i {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(84, 60, 42, 0.42);
+      animation: supportTypingDot 1.55s ease-in-out infinite;
+    }
+
+    .support-typing i:nth-child(2) { animation-delay: 0.22s; }
+    .support-typing i:nth-child(3) { animation-delay: 0.44s; }
+
+    @keyframes supportTypingDot {
+      0%, 80%, 100% { opacity: 0.32; transform: translateY(0); }
+      40% { opacity: 0.92; transform: translateY(-3px); }
+    }
+
+    .support-jump-latest {
+      position: absolute;
+      left: 50%;
+      bottom: 126px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transform: translateX(-50%);
+      padding: 7px 11px;
+      border: 1px solid rgba(84, 60, 42, 0.11);
+      border-radius: 999px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.78), transparent 38%),
+        rgba(255, 251, 244, 0.92);
+      box-shadow: 0 12px 28px rgba(85, 56, 31, 0.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      cursor: pointer;
+      font: inherit;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 12px;
+      font-weight: 780;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .support-jump-latest.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(8px);
+    }
+
+    .support-jump-icon {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      color: #fff8ef;
+      background: linear-gradient(145deg, var(--green), var(--accent-dark));
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .support-jump-count {
+      min-width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0 5px;
+      border-radius: 999px;
+      color: #fff8ef;
+      background: var(--accent);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .support-jump-count.empty {
+      display: none;
+    }
+
+    .support-quick-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 8px;
+      padding: 8px 12px 9px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-top: 1px solid rgba(84, 60, 42, 0.07);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(255, 255, 255, 0.42), transparent 44%),
+        rgba(255, 251, 244, 0.34);
+      scrollbar-width: thin;
+    }
+
+    .support-quick-actions.is-hidden {
+      display: none;
+    }
+
+    .support-quick-actions::-webkit-scrollbar { height: 6px; }
+    .support-quick-actions::-webkit-scrollbar-track { background: transparent; }
+    .support-quick-actions::-webkit-scrollbar-thumb {
+      background: rgba(84, 60, 42, 0.12);
+      border-radius: 999px;
+    }
+
+    .support-quick-card {
+      flex: 0 0 auto;
+      width: 116px;
+      min-height: 42px;
+      display: grid;
+      gap: 2px;
+      align-content: center;
+      padding: 7px 9px;
+      border: 1px solid rgba(84, 60, 42, 0.10);
+      border-radius: 15px;
+      color: var(--ink);
+      text-align: left;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.70), transparent 38%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(246, 237, 224, 0.50));
+      box-shadow: 0 6px 16px rgba(85, 56, 31, 0.055), inset 0 1px 0 rgba(255,255,255,0.50);
+      cursor: pointer;
+      font: inherit;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .support-quick-card:hover {
+      transform: translateY(-1px);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.84), transparent 38%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(248, 238, 224, 0.66));
+      border-color: rgba(181, 101, 69, 0.20);
+      box-shadow: 0 9px 20px rgba(85, 56, 31, 0.08), inset 0 1px 0 rgba(255,255,255,0.62);
+    }
+
+    .support-quick-card-title {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 850;
+      letter-spacing: 0.01em;
+      line-height: 1.18;
+    }
+
+    .support-quick-card-desc {
+      display: block;
+      color: var(--muted);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 9.5px;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .support-quick-card.primary {
+      color: #fff8ef;
+      border-color: rgba(255,255,255,0.20);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.24), transparent 36%),
+        linear-gradient(145deg, var(--green), var(--accent-dark));
+      box-shadow: 0 8px 20px rgba(101, 123, 85, 0.16), inset 0 1px 0 rgba(255,255,255,0.20);
+    }
+
+    .support-quick-card.primary .support-quick-card-desc {
+      color: rgba(255, 248, 239, 0.78);
+    }
+
+    .support-compose {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px 14px;
+      border-top: 1px solid rgba(84, 60, 42, 0.08);
+      background: rgba(255, 251, 244, 0.56);
+    }
+
+    .support-input {
+      min-width: 0;
+      flex: 1;
+      height: 42px;
+      padding: 0 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(84, 60, 42, 0.12);
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.62);
+      outline: none;
+      font: inherit;
+      font-size: 14px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .support-input:focus {
+      border-color: rgba(181, 101, 69, 0.42);
+      box-shadow: 0 0 0 4px rgba(181, 101, 69, 0.10);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .support-send {
+      flex: 0 0 auto;
+      height: 42px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff8ef;
+      background: linear-gradient(145deg, var(--accent), var(--accent-dark));
+      box-shadow: 0 10px 22px rgba(181, 101, 69, 0.18);
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .support-send:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(181, 101, 69, 0.24);
+    }
+
+    @media (max-width: 640px) {
+      .support-widget-launcher {
+        left: max(12px, env(safe-area-inset-left));
+        bottom: max(12px, env(safe-area-inset-bottom));
+        min-width: 0;
+        padding: 9px;
+      }
+
+      .support-launcher-text {
+        display: none;
+      }
+
+      .support-panel {
+        right: max(10px, env(safe-area-inset-right));
+        left: max(10px, env(safe-area-inset-left));
+        bottom: max(10px, env(safe-area-inset-bottom));
+        width: auto;
+        height: min(600px, calc(100vh - 20px));
+        border-radius: 26px;
+      }
+
+      .support-bubble {
+        max-width: min(280px, calc(100% - 44px));
+        font-size: 13px;
+      }
+
+      .support-jump-latest {
+        bottom: 118px;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -1440,7 +2065,7 @@
         <p class="intro-gate-kicker">Cyber Doggo</p>
         <h2 id="introGateTitle" data-i18n="cover.title">把一些日子留下来</h2>
         <p class="intro-cover-lead" data-i18n="cover.lead">
-          这是一款关于时间、记忆以及日记的电子宠物游戏。你会和一只小狗一起生活，照顾它，陪它出门，并偶尔翻开它写下的日记。
+          这是一款关于时间、记忆、小狗以及日记的电子宠物游戏。你会和一只小狗一起生活，照顾它，陪它出门，并偶尔翻开它写下的日记。
         </p>
 
         <div class="intro-gate-actions">
@@ -1496,7 +2121,7 @@
         <section class="intro-panel" aria-labelledby="aboutGameTitle">
           <p class="intro-kicker">About this game</p>
           <h2 id="aboutGameTitle" data-i18n="about.title">和一只小狗一起生活</h2>
-          <p data-i18n="about.p1">这是一款关于时间、记忆以及日记的游戏。</p>
+          <p data-i18n="about.p1">这是一款关于时间、记忆、小狗以及日记的游戏。</p>
           <p data-i18n="about.p2">你会和一只小狗一起生活，照顾它，陪它出门，和它一起度过一天又一天。它会偶尔写日记，把某些发生过的事留在自己的记忆里。</p>
           <p data-i18n="about.p3">有些日子很普通，有些日子会发生小小的冒险。喂过的饭、摸过的头、带回来的旧物、写下来的日记，都会慢慢变成你和它之间的痕迹。</p>
           <p data-i18n="about.p4">也许一开始，它只是屏幕里的一只小狗。但当你翻开某一篇日记，或者查看某一件旧物时，或许会发现，你和它一起走过的那些点点滴滴，已经让它成了心里很特殊的存在。</p>
@@ -1541,6 +2166,45 @@
     </article>
   </main>
 
+
+  <button class="support-widget-launcher" id="supportWidgetLauncher" type="button" aria-controls="supportPanel" aria-expanded="false">
+    <span class="support-launcher-mark" aria-hidden="true">汐</span>
+    <span class="support-launcher-text">
+      <span class="support-launcher-title" data-support-i18n="launcher.title">汐bot</span>
+      <span class="support-launcher-subtitle" data-support-i18n="launcher.subtitle">发布页小客服</span>
+    </span>
+  </button>
+
+  <section class="support-panel" id="supportPanel" aria-label="Cyber Doggo 发布页客服" hidden>
+    <header class="support-header">
+      <div class="support-avatar" id="supportHeaderAvatar" aria-hidden="true">汐</div>
+      <div class="support-header-main">
+        <div class="support-title-row">
+          <div class="support-title" id="supportHeaderTitle">汐bot</div>
+          <div class="support-status-pill" id="supportStatusPill">在线</div>
+        </div>
+        <div class="support-subtitle" id="supportHeaderSubtitle">Cyber Doggo 发布页客服</div>
+      </div>
+      <button class="support-close" id="supportCloseButton" type="button" aria-label="关闭客服窗口">×</button>
+    </header>
+
+    <div class="support-messages" id="supportMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <button class="support-jump-latest hidden" id="supportJumpLatestButton" type="button" aria-label="回到底部">
+      <span class="support-jump-icon">↓</span>
+      <span id="supportJumpLatestText">新消息</span>
+      <span class="support-jump-count" id="supportJumpLatestCount"></span>
+    </button>
+
+    <div class="support-quick-actions is-hidden" id="supportQuickActions" aria-label="智能联想问题" aria-hidden="true"></div>
+
+    <form class="support-compose" id="supportCompose">
+      <input class="support-input" id="supportInput" type="text" autocomplete="off" data-support-i18n-placeholder="input.placeholder" placeholder="请输入关于游戏的问题，或输入转人工…" />
+      <button class="support-send" id="supportSendButton" type="submit" data-support-i18n="input.send">发送</button>
+    </form>
+  </section>
+
+
+  <script src="zixi-config.js"></script>
   <script>
     const INTRO_DISMISSED_KEY = "cyber-doggo-release-intro-dismissed";
 
@@ -1603,11 +2267,11 @@
     const I18N_TEXT = {
       zh: {
         documentTitle: "赛博狗子下载页",
-        description: "Cyber Doggo 是一款关于时间、记忆以及日记的电子宠物游戏。下载 Android 与 Windows 测试版。",
+        description: "Cyber Doggo 是一款关于时间、记忆、小狗以及日记的电子宠物游戏。下载 Android 与 Windows 测试版。",
         languageButton: "Language · CN",
         languageLabel: "切换语言",
         "cover.title": "把一些日子留下来",
-        "cover.lead": "这是一款关于时间、记忆以及日记的电子宠物游戏。你会和一只小狗一起生活，照顾它，陪它出门，并偶尔翻开它写下的日记。",
+        "cover.lead": "这是一款关于时间、记忆、小狗以及日记的电子宠物游戏。你会和一只小狗一起生活，照顾它，陪它出门，并偶尔翻开它写下的日记。",
         "cover.button": "前往下载",
         "chip.time": "时间",
         "chip.memory": "记忆",
@@ -1621,7 +2285,7 @@
         "download.note": "<strong>重要更新：</strong>v0.4.1 稳定性热修复已发布。本版主要修复自然跨天后的日记显示、周记 / 回忆两段式写入，以及人格余韵结算稳定性。",
         "repo.note": "想查看项目主页、历史版本或更新说明，也可以前往：<a class=\"text-link\" href=\"https://github.com/zilongdeng923/cyber-doggo-release\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub 仓库 →</a><br><span class=\"muted\">游戏启动后会自动检查这里是否有新版本可下载。</span>",
         "about.title": "和一只小狗一起生活",
-        "about.p1": "这是一款关于时间、记忆以及日记的游戏。",
+        "about.p1": "这是一款关于时间、记忆、小狗以及日记的游戏。",
         "about.p2": "你会和一只小狗一起生活，照顾它，陪它出门，和它一起度过一天又一天。它会偶尔写日记，把某些发生过的事留在自己的记忆里。",
         "about.p3": "有些日子很普通，有些日子会发生小小的冒险。喂过的饭、摸过的头、带回来的旧物、写下来的日记，都会慢慢变成你和它之间的痕迹。",
         "about.p4": "也许一开始，它只是屏幕里的一只小狗。但当你翻开某一篇日记，或者查看某一件旧物时，或许会发现，你和它一起走过的那些点点滴滴，已经让它成了心里很特殊的存在。",
@@ -1892,6 +2556,1372 @@
         fallback.textContent = `${error.message}。${getText("updates.errorPrefix")}`;
         container.appendChild(fallback);
       });
+
+    /* Zixi / Xibot release-page support widget */
+    const SUPPORT_CAMERA_NOTICE_KEY = "cyber-doggo-zixi-camera-notice-v1";
+    const SUPPORT_VISUAL_DISCLOSURE_KEY = "cyber-doggo-zixi-visual-disclosure-v1";
+    const SUPPORT_TIME_GAP_MS = 5 * 60 * 1000;
+    const SUPPORT_VISITOR_ID_KEY = "cyber-doggo-zixi-visitor-id-v1";
+    function supportVisitorId() {
+      try {
+        let id = window.localStorage.getItem(SUPPORT_VISITOR_ID_KEY);
+        if (!id) {
+          id = (window.crypto && window.crypto.randomUUID)
+            ? window.crypto.randomUUID()
+            : `visitor-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+          window.localStorage.setItem(SUPPORT_VISITOR_ID_KEY, id);
+        }
+        return id;
+      } catch (_error) {
+        return `visitor-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+      }
+    }
+    function supportApiHeaders(withJson = true) {
+      const headers = { "X-Zixi-Visitor-Id": supportVisitorId() };
+      if (withJson) headers["Content-Type"] = "application/json";
+      return headers;
+    }
+    const ZIXI_API_ENDPOINT = window.ZIXI_API_ENDPOINT || (() => {
+      try {
+        const stored = window.localStorage.getItem("cyber-doggo-zixi-api-endpoint");
+        if (stored) return stored;
+      } catch (_error) {}
+      const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+      return isLocalHost ? "/api/zixi" : "";
+    })();
+
+    const SUPPORT_I18N = {
+      zh: {
+        "launcher.title": "汐bot-923",
+        "launcher.subtitle": "（ᗜ˰ᗜ）",
+        "panel.botTitle": "汐bot-923",
+        "panel.botSubtitle": "FAQ 服务中（ᗜˬᗜ）",
+        "panel.zixiTitle": "梓汐",
+        "panel.zixiSubtitle": "发布页客服接线中",
+        "status.online": "在线",
+        "status.local": "本地测试",
+        "input.placeholder": "请输入关于游戏的问题，或输入转人工…",
+        "input.placeholderZixi": "和人工客服说点什么，或问下载 / 版本 / 备份…",
+        "input.placeholderConfirm": "再次发送“转人工”确认，或发送“取消”取消。",
+        "input.send": "发送",
+        "system.zixiJoined": "感谢等待，人工客服42号已对接。",
+        "system.supportEnded": "人工服务已结束。",
+        "bot.returned": "汐bot接回 FAQ 服务。汐bot在。ᗜˬᗜ",
+        "system.cameraOpened": "摄像头已打开",
+        "system.cameraClosed": "摄像头已关闭",
+        "smart.what": "这个游戏是什么？",
+        "smart.what.desc": "小狗和日记",
+        "smart.download": "怎么下载？",
+        "smart.download.desc": "APK / EXE",
+        "smart.install": "怎么安装？",
+        "smart.install.desc": "install",
+        "smart.android": "Android 安装问题",
+        "smart.android.desc": "APK",
+        "smart.windows": "Windows 安装问题",
+        "smart.windows.desc": "EXE",
+        "smart.backup": "更新前要备份吗？",
+        "smart.backup.desc": "先存一下",
+        "smart.save": "存档怎么处理？",
+        "smart.save.desc": "本地存档",
+        "smart.version": "现在是什么版本？",
+        "smart.version.desc": "v0.4.1",
+        "smart.changelog": "更新日志在哪？",
+        "smart.changelog.desc": "更新记录",
+        "smart.safety": "安装包安全吗？",
+        "smart.safety.desc": "确认来源",
+        "smart.missing": "现在还没有什么？",
+        "smart.missing.desc": "还没做的",
+        "smart.diary": "日记系统是什么？",
+        "smart.diary.desc": "会写东西",
+        "smart.memory": "记忆系统是什么？",
+        "smart.memory.desc": "会记也会忘",
+        "smart.personality": "人格会变化吗？",
+        "smart.personality.desc": "慢慢长",
+        "smart.adventure": "冒险会影响什么？",
+        "smart.adventure.desc": "会带回痕迹",
+        "smart.human": "转人工",
+        "smart.human.desc": "接入人工客服",
+        "smart.language": "支持英文吗？",
+        "smart.language.desc": "中 / 英"
+      },
+      en: {
+        "launcher.title": "Xibot-923",
+        "launcher.subtitle": "（ᗜ˰ᗜ）",
+        "panel.botTitle": "Xibot-923",
+        "panel.botSubtitle": "FAQ service（ᗜˬᗜ）",
+        "panel.zixiTitle": "Zixi",
+        "panel.zixiSubtitle": "Release-page support",
+        "status.online": "Online",
+        "status.local": "Local test",
+        "input.placeholder": "Ask about the game, or type human support…",
+        "input.placeholderZixi": "Talk to human support, or ask about downloads / versions / backups…",
+        "input.placeholderConfirm": "Type “human support” again to confirm, or “cancel” to cancel.",
+        "input.send": "Send",
+        "system.zixiJoined": "Thanks for waiting. Human support #42 is connected.",
+        "system.supportEnded": "Human support has ended.",
+        "bot.returned": "Xibot is back for FAQ service. Xibot is here. ᗜˬᗜ",
+        "system.cameraOpened": "Camera opened",
+        "system.cameraClosed": "Camera closed",
+        "smart.what": "What is this game?",
+        "smart.what.desc": "dog and diaries",
+        "smart.download": "How do I download?",
+        "smart.download.desc": "APK / EXE",
+        "smart.install": "How do I install?",
+        "smart.install.desc": "install",
+        "smart.android": "Android install help",
+        "smart.android.desc": "APK",
+        "smart.windows": "Windows install help",
+        "smart.windows.desc": "EXE",
+        "smart.backup": "Should I back up first?",
+        "smart.backup.desc": "save first",
+        "smart.save": "How do saves work?",
+        "smart.save.desc": "local saves",
+        "smart.version": "Current version?",
+        "smart.version.desc": "v0.4.1",
+        "smart.changelog": "Where is the changelog?",
+        "smart.changelog.desc": "notes",
+        "smart.safety": "Is the installer safe?",
+        "smart.safety.desc": "check source",
+        "smart.missing": "What is not included yet?",
+        "smart.missing.desc": "not yet",
+        "smart.diary": "What are diaries?",
+        "smart.diary.desc": "writes things",
+        "smart.memory": "What is memory?",
+        "smart.memory.desc": "remembers / forgets",
+        "smart.personality": "Can personality change?",
+        "smart.personality.desc": "grows slowly",
+        "smart.adventure": "What do adventures affect?",
+        "smart.adventure.desc": "leaves traces",
+        "smart.human": "Human support",
+        "smart.human.desc": "human support",
+        "smart.language": "English support?",
+        "smart.language.desc": "zh / en"
+      }
+    };
+
+    const SUPPORT_AVATARS = {
+      neutral: "./assets/zixi/avatars/v2/neutral.webp",
+      bright: "./assets/zixi/avatars/v2/bright.webp",
+      soft: "./assets/zixi/avatars/v2/soft.webp",
+      comforting: "./assets/zixi/avatars/v2/comforting.webp",
+      pondering: "./assets/zixi/avatars/v2/pondering.webp",
+      checking: "./assets/zixi/avatars/v2/checking.webp",
+      shy: "./assets/zixi/avatars/v2/shy.webp",
+      apologetic: "./assets/zixi/avatars/v2/apologetic.webp",
+      worried: "./assets/zixi/avatars/v2/worried.webp",
+      surprised: "./assets/zixi/avatars/v2/surprised.webp",
+      pout: "./assets/zixi/avatars/v2/pout.webp",
+      serious: "./assets/zixi/avatars/v2/serious.webp",
+      boundary: "./assets/zixi/avatars/v2/boundary.webp",
+      mischief: "./assets/zixi/avatars/v2/mischief.webp",
+      sleepy: "./assets/zixi/avatars/v2/sleepy.webp",
+      goodbye: "./assets/zixi/avatars/v2/goodbye.webp"
+    };
+
+    const SUPPORT_EMOTIONS = new Set(Object.keys(SUPPORT_AVATARS));
+
+    const supportState = {
+      opened: false,
+      mode: "bot",
+      zixiCameraOpen: false,
+      zixiCameraOpenedThisSession: false,
+      zixiHasBeenOnline: false,
+      zixiHandoffCount: 0,
+      zixiLastReturnAt: 0,
+      zixiEmotion: "neutral",
+      zixiIdentityKnown: false,
+      zixiIdentityTopicActive: false,
+      zixiAppearanceTopicActive: false,
+      zixiIdentityKnownBeforeMessage: false,
+      zixiPersonaTease: { active: false, turns: 0, lastAction: "none" },
+      busy: false,
+      lastMessageTime: 0,
+      history: [],
+      pendingTransfer: false,
+      activeTypingRow: null,
+      followChat: true,
+      unreadCount: 0,
+      isProgrammaticScroll: false,
+      messageChain: Promise.resolve()
+    };
+
+    const supportEls = {};
+
+    const SUPPORT_TIMING = {
+      botTypingMin: 900,
+      zixiTypingMin: 1500,
+      botFirstTyping: 980,
+      zixiFirstTyping: 1600,
+      botBetweenBubbles: 460,
+      zixiBetweenBubbles: 920,
+      botCharNormal: 16,
+      botCharComma: 44,
+      botCharPunctuation: 92,
+      botCharNewline: 120,
+      zixiCharNormal: 42,
+      zixiCharAscii: 28,
+      zixiCharComma: 82,
+      zixiCharPunctuation: 165,
+      zixiCharEllipsis: 110,
+      zixiCharNewline: 180,
+      transferConnectingDelay: 1600,
+      transferConnectedDelay: 1350,
+      zixiBeforeOnlineTyping: 1250
+    };
+
+    function supportLang() {
+      try {
+        return currentLanguage === "en" ? "en" : "zh";
+      } catch (_error) {
+        return document.documentElement.lang && document.documentElement.lang.startsWith("en") ? "en" : "zh";
+      }
+    }
+
+    function supportText(key) {
+      const lang = supportLang();
+      return (SUPPORT_I18N[lang] && SUPPORT_I18N[lang][key]) || SUPPORT_I18N.zh[key] || key;
+    }
+
+    function supportApplyLanguage() {
+      document.querySelectorAll("[data-support-i18n]").forEach((node) => {
+        node.textContent = supportText(node.dataset.supportI18n);
+      });
+      document.querySelectorAll("[data-support-i18n-placeholder]").forEach((node) => {
+        node.setAttribute("placeholder", supportText(node.dataset.supportI18nPlaceholder));
+      });
+      if (supportEls.closeButton) {
+        supportEls.closeButton.setAttribute("aria-label", supportLang() === "en" ? "Close support window" : "关闭客服窗口");
+      }
+      if (supportEls.jumpLatestText) {
+        supportEls.jumpLatestText.textContent = supportLang() === "en" ? "New messages" : "新消息";
+      }
+      supportRenderQuickActions();
+      supportUpdateHeader();
+      supportUpdatePlaceholder();
+    }
+
+    function supportFormatTime(date) {
+      const now = new Date();
+      const sameDay = date.toDateString() === now.toDateString();
+      const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      if (sameDay) return time;
+      return `${date.toLocaleDateString()} ${time}`;
+    }
+
+    function supportMaybeAddTimeDivider() {
+      const now = Date.now();
+      if (!supportState.lastMessageTime || now - supportState.lastMessageTime > SUPPORT_TIME_GAP_MS) {
+        const node = document.createElement("div");
+        node.className = "support-time-divider";
+        node.textContent = supportFormatTime(new Date(now));
+        supportEls.messages.appendChild(node);
+      }
+      supportState.lastMessageTime = now;
+    }
+
+    function supportIsNearBottom(threshold = 80) {
+      if (!supportEls.messages) return true;
+      return supportEls.messages.scrollHeight - supportEls.messages.scrollTop - supportEls.messages.clientHeight <= threshold;
+    }
+
+    function supportSetUnreadCount(count) {
+      supportState.unreadCount = Math.max(0, count);
+      if (!supportEls.jumpLatestButton || !supportEls.jumpLatestCount) return;
+      supportEls.jumpLatestCount.textContent = String(supportState.unreadCount);
+      supportEls.jumpLatestCount.classList.toggle("empty", supportState.unreadCount === 0);
+      supportEls.jumpLatestButton.classList.toggle("hidden", supportState.followChat || supportState.unreadCount === 0);
+    }
+
+    function supportScrollToBottom(options = {}) {
+      if (!supportEls.messages) return;
+      const behavior = options.behavior || "auto";
+      requestAnimationFrame(() => {
+        supportState.isProgrammaticScroll = true;
+        supportEls.messages.scrollTo({ top: supportEls.messages.scrollHeight, behavior });
+        window.setTimeout(() => {
+          supportState.isProgrammaticScroll = false;
+        }, behavior === "smooth" ? 260 : 50);
+      });
+      supportState.followChat = true;
+      supportSetUnreadCount(0);
+    }
+
+    function supportSmartScroll({ newMessage = false, force = false } = {}) {
+      if (force || supportState.followChat || supportIsNearBottom()) {
+        supportScrollToBottom();
+        return;
+      }
+
+      if (newMessage) {
+        supportSetUnreadCount(supportState.unreadCount + 1);
+      }
+    }
+
+    function supportWait(ms) {
+      return new Promise((resolve) => window.setTimeout(resolve, ms));
+    }
+
+    function supportCharDelay(ch, profile) {
+      if (profile === "bot") {
+        if (/[。！？!?；;]/.test(ch)) return SUPPORT_TIMING.botCharPunctuation;
+        if (/[，、,.]/.test(ch)) return SUPPORT_TIMING.botCharComma;
+        if (ch === "\n") return SUPPORT_TIMING.botCharNewline;
+        return SUPPORT_TIMING.botCharNormal;
+      }
+
+      if (/[。！？!?；;]/.test(ch)) return SUPPORT_TIMING.zixiCharPunctuation;
+      if (/[，、,.]/.test(ch)) return SUPPORT_TIMING.zixiCharComma;
+      if (/[……]/.test(ch)) return SUPPORT_TIMING.zixiCharEllipsis;
+      if (ch === "\n") return SUPPORT_TIMING.zixiCharNewline;
+      if (/[a-zA-Z0-9]/.test(ch)) return SUPPORT_TIMING.zixiCharAscii;
+      return SUPPORT_TIMING.zixiCharNormal;
+    }
+
+    async function supportTypeIntoBubble(bubble, text, profile) {
+      bubble.textContent = "";
+      for (const ch of text) {
+        bubble.textContent += ch;
+        supportSmartScroll();
+        await supportWait(supportCharDelay(ch, profile));
+      }
+    }
+
+    function supportCreateAvatar(speaker, emotion, cameraOpen) {
+      const avatar = document.createElement("div");
+      avatar.className = "support-avatar";
+      avatar.setAttribute("aria-hidden", "true");
+
+      if (speaker === "user") {
+        avatar.textContent = "你";
+        return avatar;
+      }
+
+      if (speaker === "bot") {
+        avatar.textContent = "汐";
+        return avatar;
+      }
+
+      if (speaker === "zixi" && cameraOpen) {
+        const img = document.createElement("img");
+        img.alt = "";
+        img.src = SUPPORT_AVATARS[emotion] || SUPPORT_AVATARS.neutral;
+        avatar.appendChild(img);
+        return avatar;
+      }
+
+      // Before Zixi introduces herself, keep the small message avatar as “人”
+      // to echo the original in-game handoff performance. The top bar can still
+      // show “梓汐”; this only controls the staged message-side reveal.
+      avatar.textContent = supportState.zixiIdentityKnown ? "梓" : "人";
+      return avatar;
+    }
+
+    function supportCreateMessageRow(speaker, text, options = {}) {
+      supportMaybeAddTimeDivider();
+
+      const emotion = SUPPORT_EMOTIONS.has(options.emotion) ? options.emotion : "neutral";
+      const cameraOpen = speaker === "zixi" ? !!supportState.zixiCameraOpen : false;
+
+      const row = document.createElement("div");
+      row.className = `support-message ${speaker}`;
+
+      row.appendChild(supportCreateAvatar(speaker, emotion, cameraOpen));
+
+      const bubble = document.createElement("div");
+      bubble.className = `support-bubble${options.typing ? " support-typing-bubble" : ""}`;
+      if (options.typing) {
+        bubble.innerHTML = `<span class="support-typing"><i></i><i></i><i></i></span>`;
+      } else {
+        bubble.textContent = text || "";
+      }
+      row.appendChild(bubble);
+
+      supportEls.messages.appendChild(row);
+
+      if (speaker === "zixi") {
+        supportState.zixiEmotion = emotion;
+        supportUpdateHeader();
+      }
+
+      return { row, bubble, emotion };
+    }
+
+    function supportAppendSystem(text) {
+      const run = () => {
+        const node = document.createElement("div");
+        node.className = "support-system-line";
+        node.textContent = text;
+        supportEls.messages.appendChild(node);
+        supportSmartScroll({ newMessage: true });
+      };
+      supportState.messageChain = supportState.messageChain.catch(() => {}).then(run);
+      return supportState.messageChain;
+    }
+
+    function supportShowTyping(speaker, options = {}) {
+      if (!supportEls.messages || speaker === "user") return;
+      if (supportState.activeTypingRow) return;
+      const created = supportCreateMessageRow(speaker, "", { ...options, typing: true });
+      supportState.activeTypingRow = { speaker, row: created.row, createdAt: performance.now() };
+      supportSmartScroll({ newMessage: true });
+    }
+
+    function supportHideTyping() {
+      if (!supportState.activeTypingRow) return;
+      supportState.activeTypingRow.row.remove();
+      supportState.activeTypingRow = null;
+    }
+
+    function supportAppendMessage(speaker, text, options = {}) {
+      if (!text) return Promise.resolve();
+
+      if (speaker === "user" || options.instant) {
+        const { emotion } = supportCreateMessageRow(speaker, text, options);
+        if (speaker !== "system" && !options.noHistory) {
+          supportState.history.push({ speaker, text, emotion, at: new Date().toISOString() });
+          supportState.history = supportState.history.slice(-18);
+        }
+        supportSmartScroll({ newMessage: speaker !== "user" });
+        return Promise.resolve();
+      }
+
+      const run = async () => {
+        const profile = options.profile || (speaker === "zixi" ? "zixi" : "bot");
+        const typingDelay = options.typingDelay ?? (speaker === "zixi" ? SUPPORT_TIMING.zixiFirstTyping : SUPPORT_TIMING.botFirstTyping);
+        const preShownTyping = supportState.activeTypingRow && supportState.activeTypingRow.speaker === speaker;
+
+        if (preShownTyping) {
+          const minVisible = options.preShownTypingDelay ?? (speaker === "zixi" ? SUPPORT_TIMING.zixiTypingMin : SUPPORT_TIMING.botTypingMin);
+          const elapsed = performance.now() - (supportState.activeTypingRow.createdAt || performance.now());
+          const remaining = Math.max(0, minVisible - elapsed);
+          if (remaining > 0) await supportWait(remaining);
+          supportHideTyping();
+        } else {
+          if (supportState.activeTypingRow) supportHideTyping();
+          if (options.typing !== false) {
+            const typingRow = supportCreateMessageRow(speaker, "", { ...options, typing: true });
+            supportSmartScroll({ newMessage: true });
+            await supportWait(typingDelay);
+            typingRow.row.remove();
+          }
+        }
+
+        const { bubble, emotion } = supportCreateMessageRow(speaker, "", options);
+
+        if (speaker !== "system" && !options.noHistory) {
+          supportState.history.push({ speaker, text, emotion, at: new Date().toISOString() });
+          supportState.history = supportState.history.slice(-18);
+        }
+
+        supportSmartScroll({ newMessage: true });
+        if (options.typewriter === false) {
+          bubble.textContent = text;
+          supportSmartScroll();
+        } else {
+          await supportTypeIntoBubble(bubble, text, profile);
+        }
+      };
+
+      supportState.messageChain = supportState.messageChain.catch(() => {}).then(run);
+      return supportState.messageChain;
+    }
+
+    function supportNormalizeBubbles(bubbles, fallbackEmotion = "neutral") {
+      const list = Array.isArray(bubbles) ? bubbles : [bubbles];
+      return list
+        .map((item) => {
+          if (item && typeof item === "object") {
+            const text = String(item.text || item.content || item.message || "").trim();
+            return text ? { text, emotion: supportNormalizeEmotion(item.emotion || fallbackEmotion) } : null;
+          }
+          const text = String(item || "").trim();
+          return text ? { text, emotion: supportNormalizeEmotion(fallbackEmotion) } : null;
+        })
+        .filter(Boolean);
+    }
+
+    async function supportSay(speaker, bubbles, options = {}) {
+      const list = supportNormalizeBubbles(bubbles, options.emotion || "neutral");
+      for (let i = 0; i < list.length; i += 1) {
+        if (i > 0) {
+          const defaultDelay = speaker === "zixi" ? SUPPORT_TIMING.zixiBetweenBubbles : SUPPORT_TIMING.botBetweenBubbles;
+          await supportWait(options.betweenDelay ?? defaultDelay);
+        }
+        await supportAppendMessage(speaker, list[i].text, {
+          ...options,
+          emotion: list[i].emotion,
+          typing: i === 0,
+        });
+      }
+    }
+
+    function supportHeaderAvatarContent() {
+      if (!supportEls.headerAvatar) return;
+      supportEls.headerAvatar.innerHTML = "";
+      if (supportState.mode === "bot") {
+        supportEls.headerAvatar.textContent = "汐";
+        return;
+      }
+      if (supportState.zixiCameraOpen) {
+        const img = document.createElement("img");
+        img.alt = "";
+        img.src = SUPPORT_AVATARS[supportState.zixiEmotion] || SUPPORT_AVATARS.neutral;
+        supportEls.headerAvatar.appendChild(img);
+        return;
+      }
+      supportEls.headerAvatar.textContent = "梓";
+    }
+
+    function supportUpdateHeader() {
+      if (!supportEls.headerTitle) return;
+      if (supportState.mode === "zixi") {
+        supportEls.headerTitle.textContent = supportText("panel.zixiTitle");
+        supportEls.headerSubtitle.textContent = supportText("panel.zixiSubtitle");
+        supportEls.statusPill.textContent = ZIXI_API_ENDPOINT ? supportText("status.online") : supportText("status.local");
+      } else {
+        supportEls.headerTitle.textContent = supportText("panel.botTitle");
+        supportEls.headerSubtitle.textContent = supportText("panel.botSubtitle");
+        supportEls.statusPill.textContent = supportText("status.online");
+      }
+      supportUpdatePlaceholder();
+      supportHeaderAvatarContent();
+    }
+
+    function supportUpdatePlaceholder() {
+      if (!supportEls.input) return;
+      if (supportState.pendingTransfer) {
+        supportEls.input.setAttribute("placeholder", supportText("input.placeholderConfirm"));
+      } else if (supportState.mode === "zixi") {
+        supportEls.input.setAttribute("placeholder", supportText("input.placeholderZixi"));
+      } else {
+        supportEls.input.setAttribute("placeholder", supportText("input.placeholder"));
+      }
+    }
+
+    function supportOpenPanel() {
+      supportState.opened = true;
+      supportEls.panel.hidden = false;
+      supportEls.launcher.classList.add("is-hidden");
+      supportEls.launcher.setAttribute("aria-expanded", "true");
+      if (!supportEls.messages.children.length) {
+        supportBotWelcome();
+      }
+      setTimeout(() => supportEls.input.focus(), 80);
+    }
+
+    function supportClosePanel() {
+      supportState.opened = false;
+      supportEls.panel.hidden = true;
+      supportEls.launcher.classList.remove("is-hidden");
+      supportEls.launcher.setAttribute("aria-expanded", "false");
+    }
+
+    function supportBotWelcome() {
+      const zh = supportLang() === "zh";
+      supportSay("bot", [
+        {
+          text: zh
+            ? "你好，这里是汐bot-923。ᗜˬᗜ"
+            : "Hello, this is Xibot-923. ᗜˬᗜ",
+          emotion: "neutral"
+        },
+        {
+          text: zh
+            ? "正在为您提供本平台的 FAQ 服务。"
+            : "FAQ service for this release page is now active.",
+          emotion: "neutral"
+        },
+        {
+          text: zh
+            ? "如果有任何关于这款游戏的问题，请问我就好。"
+            : "If you have questions about this game, please ask me.",
+          emotion: "neutral"
+        }
+      ], { emotion: "neutral" });
+    }
+
+    const SUPPORT_FAQ = {
+      what: {
+        zh: "检索到关键词：游戏介绍。\nCyber Doggo 是关于时间、记忆、小狗和日记的电子宠物游戏。\n你可以照顾它、陪它冒险，也可以看它把经历慢慢写进日记。想继续了解的话，可以问我“记忆系统”或“冒险系统”。ᗜˬᗜ",
+        en: "Keyword found: game introduction.\nCyber Doggo is a virtual pet game about time, memory, a dog, and diaries.\nYou care for it, adventure with it, and watch its experiences settle into diaries. You can ask about memory or adventures next. ᗜˬᗜ"
+      },
+      download: {
+        zh: "检索到关键词：下载。\nAndroid 请下载 APK，Windows 请下载 EXE。\n如果下载链接打不开，建议用系统浏览器重新打开本页，再点下载按钮。ᗜ.ᗜ",
+        en: "Keyword found: download.\nUse the APK for Android and the EXE for Windows.\nIf a download link does not open, reopen this page in your system browser and try the button again. ᗜ.ᗜ"
+      },
+      install: {
+        zh: "检索到关键词：安装。\nAndroid 安装 APK；如果提示未知来源，请允许当前浏览器或文件管理器安装。\nWindows 运行 EXE；如果有系统安全提示，请先确认文件来自本发布页。",
+        en: "Keyword found: installation.\nAndroid: install the APK and allow this source if asked.\nWindows: run the EXE. If a warning appears, first verify that the file came from this release page."
+      },
+      backup: {
+        zh: "检索到关键词：备份。\n更新前建议先备份存档。\n通常可以直接覆盖安装；不要先卸载，卸载可能带走本地存档。ᗜ_ᗜ",
+        en: "Keyword found: backup.\nBack up your save before updating.\nUsually install over the old build; do not uninstall first, because local saves may disappear. ᗜ_ᗜ"
+      },
+      save: {
+        zh: "检索到关键词：存档。\n目前主要是本地存档。电脑端可以导出/导入，手机端请用游戏内的分享备份。\n发布页读不到你的存档，所以汐bot不能帮你检查具体存档内容。",
+        en: "Keyword found: saves.\nSaves are mostly local. Desktop supports export/import; Android uses the in-game backup sharing flow.\nThis release page cannot read your save, so Xibot cannot inspect specific save data."
+      },
+      version: {
+        zh: "检索到关键词：版本。\n当前发布页主推 v0.4.1 稳定性热修复。\n如果你是从旧版更新，建议先备份，再覆盖安装。ᗜˬᗜ",
+        en: "Keyword found: version.\nThe current release page highlights v0.4.1, a stability hotfix.\nIf you are updating from an older build, back up first and then install over it. ᗜˬᗜ"
+      },
+      changelog: {
+        zh: "检索到关键词：更新日志。\n页面上会显示最近更新。\n想看更完整的历史内容，请点“查看完整更新日志”。",
+        en: "Keyword found: changelog.\nRecent notes are shown on this page.\nFor older history, use the full changelog link."
+      },
+      safety: {
+        zh: "检索到关键词：安全。\n请尽量只从这个发布页下载。\n如果系统弹出风险提示，先核对来源；确认是本页下载后再继续安装。ᗜ_ᗜ",
+        en: "Keyword found: safety.\nDownload from this release page when possible.\nIf your system shows a warning, verify the source first, then continue only if it came from this page. ᗜ_ᗜ"
+      },
+      missing: {
+        zh: "检索到关键词：未实现功能。\n测试版还没有账号、云存档、多人、音乐、留言区或反馈表单。\n未来计划不等于已经做好。汐bot会按当前版本回答。ᗜ_ᗜ",
+        en: "Keyword found: not-yet features.\nNo accounts, cloud saves, multiplayer, music, comments, or feedback form yet.\nPlans are not current features. Xibot answers based on the current build. ᗜ_ᗜ"
+      },
+      diary: {
+        zh: "检索到关键词：日记。\n小狗会把照料、冒险和心情写进日记。\n日记以后也可能沉进周记、回忆和长期记忆里。你也可以问我“记忆系统”。",
+        en: "Keyword found: diaries.\nThe dog writes care, adventures, and feelings into diaries.\nDiaries may later settle into weekly notes, memoirs, and long-term memory. You can also ask about memory."
+      },
+      memory: {
+        zh: "检索到关键词：记忆。\n记忆不是单纯的文本列表。它会筛选、压缩、遗忘，也可能在以后重新浮上来。\n这是 Cyber Doggo 生命感的核心之一。ᗜ.ᗜ",
+        en: "Keyword found: memory.\nMemory is not just a text list. It can filter, compress, forget, and resurface later.\nIt is one of the core parts of Cyber Doggo's sense of life. ᗜ.ᗜ"
+      },
+      personality: {
+        zh: "检索到关键词：人格。\n人格会慢慢变化，但不是简单的奖励条。\n更像是长期经历留下的轮廓：它会影响小狗之后怎么感受世界。",
+        en: "Keyword found: personality.\nPersonality changes slowly, but it is not a simple reward bar.\nIt is more like the shape left by long-term experience, affecting how the dog later experiences the world."
+      },
+      adventure: {
+        zh: "检索到关键词：冒险。\n冒险会留下故事、物品和痕迹，也可能影响日记、记忆和人格。\n测试版偶尔可能有结算异常，认真测试前请先备份。ᗜ_ᗜ",
+        en: "Keyword found: adventure.\nAdventures can leave stories, items, and traces, and may affect diaries, memory, and personality.\nTest builds may still glitch, so back up before serious testing. ᗜ_ᗜ"
+      },
+      android: {
+        zh: "检索到关键词：Android。\nAndroid 请安装 APK。失败时先检查未知来源权限。\n如果遇到签名冲突，卸载前一定先备份。ᗜ_ᗜ",
+        en: "Keyword found: Android.\nAndroid uses the APK. If installation fails, check unknown-source permission first.\nIf there is a signature conflict, back up before uninstalling. ᗜ_ᗜ"
+      },
+      windows: {
+        zh: "检索到关键词：Windows。\nWindows 请安装 EXE。\n安全提示通常和未签名、小众下载量有关；确认来源是本发布页后再继续。",
+        en: "Keyword found: Windows.\nWindows uses the EXE installer.\nSecurity warnings often come from unsigned or low-download apps; verify this release page as the source before continuing."
+      },
+      human: {
+        zh: "检索到关键词：人工客服。\n如果需要接入，请再发送一次“转人工”确认；如果不需要，请发送“取消”。ᗜ.ᗜ",
+        en: "Keyword found: human support.\nTo connect, type “human support” again; to stop, type “cancel”. ᗜ.ᗜ"
+      },
+      language: {
+        zh: "检索到关键词：语言。\n发布页右上角可以切中文 / English。\n游戏本体的英文版还在计划中；已经生成的历史内容不会被自动翻译。",
+        en: "Keyword found: language.\nUse the top-right button to switch Chinese / English on the release page.\nFull in-game English support is still planned; existing history will not be automatically translated."
+      },
+      unknown: {
+        zh: "没有检索到很明确的关键词。ᗜ.ᗜ\n你可以问下载、安装、备份、版本、日记、记忆、人格或冒险。\n也可以输入“转人工”。",
+        en: "No clear keyword found. ᗜ.ᗜ\nYou can ask about downloads, installation, backups, versions, diaries, memory, personality, or adventures.\nYou can also type human support."
+      }
+    };
+
+    const SUPPORT_FAQ_RULES = [
+      { key: "download", regex: /下载|download|链接|打不开|微信|浏览器|release/i },
+      { key: "install", regex: /安装|未知来源|打开|运行|install|setup|permission|权限/i },
+      { key: "android", regex: /android|安卓|手机|apk|签名冲突|INSTALL_FAILED/i },
+      { key: "windows", regex: /windows|电脑|exe|安装包|安全提示|smart.?screen|杀软|报毒/i },
+      { key: "backup", regex: /备份|覆盖|卸载|更新前|backup|overwrite|uninstall/i },
+      { key: "save", regex: /存档|导入|导出|丢失|恢复|分享备份|save|import|export|transfer/i },
+      { key: "version", regex: /版本|更新|v0\.4\.1|hotfix|新版|version|update/i },
+      { key: "changelog", regex: /日志|更新内容|历史版本|changelog|release note/i },
+      { key: "safety", regex: /安全吗|安全|病毒|风险|提示|签名|官方|safe|virus|warning|source/i },
+      { key: "missing", regex: /没有|未实现|能不能|有没有|云存档|账号|多人|音乐|反馈|留言|missing|cloud|account|multiplayer|music|feedback/i },
+      { key: "diary", regex: /日记|周记|回忆|diary|weekly|memoir/i },
+      { key: "memory", regex: /记忆|遗忘|冷档案|memory|forget|archive/i },
+      { key: "personality", regex: /人格|性格|成长|变化|personality|trait|growth/i },
+      { key: "adventure", regex: /冒险|物品|背包|故事|adventure|item|inventory|story/i },
+      { key: "language", regex: /英文|中文|语言|language|english|translation/i },
+      { key: "human", regex: /人工|真人|客服|转人工|human|support|real person/i },
+      { key: "what", regex: /是什么|介绍|怎么玩|核心|理念|小狗|doggo|what is|concept|about/i }
+    ];
+
+    function supportFindFaqKey(input) {
+      const text = String(input || "").trim();
+      if (!text) return null;
+      const matched = SUPPORT_FAQ_RULES.find((rule) => rule.regex.test(text));
+      return matched ? matched.key : "unknown";
+    }
+
+    function supportFaqAnswer(key, lang = supportLang()) {
+      return (SUPPORT_FAQ[key] && SUPPORT_FAQ[key][lang]) || (SUPPORT_FAQ.unknown && SUPPORT_FAQ.unknown[lang]) || "";
+    }
+
+    function supportBuildSmartSuggestions(input) {
+      const text = String(input || "").trim();
+      if (supportState.mode === "zixi") return [];
+      if (supportState.pendingTransfer) return [];
+      if (!text) return [];
+      const results = [];
+      for (const rule of SUPPORT_FAQ_RULES) {
+        if (rule.key === "human") continue;
+        if (rule.regex.test(text) && SUPPORT_FAQ[rule.key] && !results.some((item) => item.key === rule.key)) {
+          results.push({ key: rule.key });
+        }
+      }
+      if (!results.length && text.length >= 2) results.push({ key: "what" });
+      const extras = ["download", "backup", "missing", "version", "save", "safety"];
+      for (const key of extras) {
+        if (results.length >= 4) break;
+        if (!results.some((item) => item.key === key)) results.push({ key });
+      }
+      return results.slice(0, 4).map((item, index) => {
+        const labelKey = `smart.${item.key}`;
+        const descKey = `smart.${item.key}.desc`;
+        return {
+          ...item,
+          label: supportText(labelKey) || item.key,
+          desc: supportText(descKey) || "FAQ",
+          primary: index === 0
+        };
+      });
+    }
+
+    function supportIsTransferRequest(input) {
+      const text = String(input || '').trim();
+      if (!text) return false;
+      return /^(转人工|人工|人工客服|真人客服|找人工|接人工|接入人工|human support|human|real person|real human)$/i.test(text)
+        || /转.*(人工|真人)|找.*(人工|真人)|接.*(人工|真人)|human\s+support/i.test(text);
+    }
+
+    function supportIsNegativeTransfer(input) {
+      return /^(取消|不用|先不用|算了|不要|no|n|cancel|not now)$/i.test(String(input || '').trim());
+    }
+
+    function supportRequestTransferToZixi() {
+      if (supportState.mode === "zixi") {
+        supportTransferToZixi();
+        return;
+      }
+      supportState.pendingTransfer = true;
+      supportRenderQuickActions();
+      supportUpdatePlaceholder();
+      supportSay("bot", supportLang() === "zh"
+        ? ["检索到关键词：人工客服。", "如果需要接入，请再发送一次“转人工”确认；如果不需要，请发送“取消”。ᗜ.ᗜ"]
+        : ["Keyword found: human support.", "To connect, type “human support” again; to stop, type “cancel”. ᗜ.ᗜ"]
+      , { emotion: "neutral" });
+    }
+
+    function supportCancelTransferToZixi() {
+      supportState.pendingTransfer = false;
+      supportRenderQuickActions();
+      supportUpdatePlaceholder();
+      supportSay("bot", supportLang() === "zh"
+        ? ["收到。", "继续 FAQ 服务。汐bot在。ᗜˬᗜ"]
+        : ["Received.", "FAQ service continues. Xibot is here. ᗜˬᗜ"]
+      , { emotion: "neutral" });
+    }
+
+    function supportBotReply(input) {
+      const lang = supportLang();
+
+      if (supportState.pendingTransfer) {
+        if (supportIsTransferRequest(input)) {
+          supportTransferToZixi();
+          return;
+        }
+        if (supportIsNegativeTransfer(input)) {
+          supportCancelTransferToZixi();
+          return;
+        }
+        supportSay("bot", lang === "zh"
+          ? ["还没有接入人工客服。", "请再发送一次“转人工”来确认，或发送“取消”取消接线。ᗜ.ᗜ"]
+          : ["Human support is not connected yet.", "Type “human support” again to confirm, or type “cancel” to cancel. ᗜ.ᗜ"]
+        , { emotion: "neutral" });
+        return;
+      }
+
+      if (supportIsTransferRequest(input)) {
+        supportRequestTransferToZixi();
+        return;
+      }
+
+      const key = supportFindFaqKey(input);
+      const answer = supportFaqAnswer(key, lang);
+      const bubbles = String(answer || "").split(/\n+/).map((line) => line.trim()).filter(Boolean);
+      supportSay("bot", bubbles, { emotion: "neutral" });
+    }
+
+    function supportRenderQuickActions() {
+      if (!supportEls.quickActions) return;
+      const items = supportBuildSmartSuggestions(supportEls.input ? supportEls.input.value : "");
+      supportEls.quickActions.innerHTML = "";
+      supportEls.quickActions.classList.toggle("is-hidden", items.length === 0 || supportState.mode === "zixi");
+      supportEls.quickActions.setAttribute("aria-hidden", items.length === 0 || supportState.mode === "zixi" ? "true" : "false");
+      if (!items.length || supportState.mode === "zixi") return;
+
+      items.forEach((item) => {
+        const button = document.createElement("button");
+        button.className = `support-quick-card${item.primary ? " primary" : ""}`;
+        button.type = "button";
+        const title = document.createElement("span");
+        title.className = "support-quick-card-title";
+        title.textContent = item.label;
+        const desc = document.createElement("span");
+        desc.className = "support-quick-card-desc";
+        desc.textContent = item.desc;
+        button.appendChild(title);
+        button.appendChild(desc);
+        button.addEventListener("click", () => {
+          if (supportState.mode === "zixi") {
+            supportRenderQuickActions();
+            return;
+          }
+          if (item.key === "__confirm_transfer") {
+            supportAppendMessage("user", supportLang() === "zh" ? "确认接入" : "Confirm");
+            if (supportEls.input) supportEls.input.value = "";
+            supportRenderQuickActions();
+            supportTransferToZixi();
+            return;
+          }
+          if (item.key === "__cancel_transfer") {
+            supportAppendMessage("user", supportLang() === "zh" ? "取消" : "cancel");
+            if (supportEls.input) supportEls.input.value = "";
+            supportRenderQuickActions();
+            supportCancelTransferToZixi();
+            return;
+          }
+          const label = item.label;
+          supportAppendMessage("user", label);
+          if (supportEls.input) supportEls.input.value = "";
+          supportRenderQuickActions();
+          supportShowTyping("bot", { emotion: "neutral" });
+          supportAppendMessage("bot", supportFaqAnswer(item.key, supportLang()), { emotion: "neutral" });
+        });
+        supportEls.quickActions.appendChild(button);
+      });
+    }
+
+    async function supportTransferToZixi() {
+      if (supportState.mode === "zixi") {
+        supportAppendMessage("zixi", supportLang() === "zh"
+          ? "我已经在啦。发布页客服临时接线中，有什么想问的？(｀・ω・´)"
+          : "I am already here. Release-page support is on the line. What would you like to ask?"
+        , { emotion: "bright" });
+        return;
+      }
+
+      const zh = supportLang() === "zh";
+      const isReconnect = !!supportState.zixiHasBeenOnline;
+      supportState.pendingTransfer = false;
+      supportRenderQuickActions();
+      supportUpdatePlaceholder();
+      supportSetBusy(true);
+      supportHideTyping();
+
+      const light = await supportFetchZixiLightState();
+      if (light && light.exhausted && light.finalClosureDone) {
+        await supportAppendSystem(supportLightConnectionMessage(light));
+        supportSetBusy(false);
+        return;
+      }
+
+      if (isReconnect) {
+        await supportAppendSystem(zh ? "接线中……" : "Connecting…");
+        await supportWait(Math.max(520, Math.floor(SUPPORT_TIMING.transferConnectingDelay * 0.55)));
+        await supportAppendSystem(supportText("system.zixiJoined"));
+        await supportWait(Math.max(420, Math.floor(SUPPORT_TIMING.transferConnectedDelay * 0.45)));
+      } else {
+        await supportAppendSystem(zh ? "接线中……" : "Connecting…");
+        await supportWait(SUPPORT_TIMING.transferConnectingDelay);
+        await supportAppendSystem(supportText("system.zixiJoined"));
+        await supportWait(SUPPORT_TIMING.transferConnectedDelay);
+      }
+
+      supportState.mode = "zixi";
+      supportState.zixiHasBeenOnline = true;
+      supportState.zixiHandoffCount = (supportState.zixiHandoffCount || 0) + 1;
+      supportState.zixiIdentityKnown = false;
+      supportState.zixiIdentityTopicActive = false;
+      supportState.zixiIdentityKnownBeforeMessage = false;
+      supportRenderQuickActions();
+      supportUpdateHeader();
+      supportUpdatePlaceholder();
+
+      supportShowTyping("zixi", { emotion: isReconnect ? "mischief" : "bright" });
+      await supportWait(isReconnect ? Math.max(720, Math.floor(SUPPORT_TIMING.zixiBeforeOnlineTyping * 0.55)) : SUPPORT_TIMING.zixiBeforeOnlineTyping);
+
+      if (isReconnect) {
+        await supportSay("zixi", [
+          {
+            text: zh
+              ? "我又被交回人工客服通道了。怎么，你刚才是把我送下线之后又想起来找我？"
+              : "I am back on the human-support line. Did you send me off and then decide you wanted me again?",
+            emotion: "mischief"
+          },
+          {
+            text: zh
+              ? "那就继续吧。别担心，我没那么容易被普通调侃赶下线。"
+              : "All right, let's continue. Do not worry, ordinary teasing will not send me running offline.",
+            emotion: "soft"
+          }
+        ], { emotion: "mischief", preShownTypingDelay: 0 });
+      } else {
+        await supportSay("zixi", [
+          { text: zh ? "喂？" : "Hello?", emotion: "surprised" },
+          { text: zh ? "喂喂？啊，连上了。" : "Hello hello? Ah, connected.", emotion: "bright" }
+        ], { emotion: "bright", preShownTypingDelay: 0, betweenDelay: 560 });
+
+        supportState.zixiIdentityKnown = true;
+        supportUpdateHeader();
+
+        await supportSay("zixi", [
+          {
+            text: zh ? "初次见面，我是梓汐。" : "Nice to meet you. I'm Zixi.",
+            emotion: "bright"
+          },
+          {
+            text: zh
+              ? "欢迎来到 Cyber Doggo 发布页。下载、安装、备份，或者任何关于这款游戏的事，都可以问我喔~"
+              : "Welcome to the Cyber Doggo release page. Downloads, installation, backups, or anything about the game—you can ask me.",
+            emotion: "soft"
+          }
+        ], { emotion: "soft", betweenDelay: 680 });
+      }
+      supportSetBusy(false);
+    }
+
+    async function supportReturnToBot(reason = "api") {
+      supportState.mode = "bot";
+      supportState.pendingTransfer = false;
+      // Do not close Zixi's camera just because she goes offline.
+      // Camera state belongs to the user/Zixi interaction and should persist
+      // across handoff/reconnect unless Zixi explicitly returns cameraAction=close
+      // or the user asks to close it. This lets goodbye expressions remain visible
+      // during the final bubble and keeps the camera open next time she comes back.
+      supportState.zixiLastReturnAt = Date.now();
+      supportState.zixiEmotion = "neutral";
+      supportState.zixiIdentityKnown = false;
+      supportState.zixiIdentityTopicActive = false;
+      supportState.zixiIdentityKnownBeforeMessage = false;
+      supportState.zixiAppearanceTopicActive = false;
+      supportRenderQuickActions();
+      supportUpdateHeader();
+      supportUpdatePlaceholder();
+      await supportWait(420);
+      await supportAppendSystem(supportText("system.supportEnded"));
+      await supportWait(360);
+      await supportSay("bot", [{ text: supportText("bot.returned"), emotion: "neutral" }], { emotion: "neutral", betweenDelay: 0 });
+    }
+
+    function supportOpenZixiCamera(reason = "") {
+      if (supportState.mode !== "zixi") return;
+
+      if (!supportState.zixiCameraOpen) {
+        supportState.zixiCameraOpen = true;
+        supportState.zixiCameraOpenedThisSession = true;
+        supportState.zixiEmotion = "bright";
+        supportUpdateHeader();
+        supportAppendSystem(supportText("system.cameraOpened"));
+        try {
+          window.localStorage.setItem(SUPPORT_CAMERA_NOTICE_KEY, "1");
+          window.localStorage.setItem(SUPPORT_VISUAL_DISCLOSURE_KEY, "1");
+        } catch (_error) {}
+      }
+    }
+
+    function supportCloseZixiCamera() {
+      if (supportState.zixiCameraOpen) {
+        supportState.zixiCameraOpen = false;
+        supportUpdateHeader();
+        supportAppendSystem(supportText("system.cameraClosed"));
+      }
+    }
+
+    function supportNormalizeEmotion(emotion) {
+      const map = { smile: "bright", thinking: "pondering", cheking: "checking", suprised: "surprised" };
+      const normalized = map[emotion] || emotion;
+      return SUPPORT_EMOTIONS.has(normalized) ? normalized : "neutral";
+    }
+
+    function supportLooksLikeAppearanceTopic(input) {
+      return /摄像头|头像|表情|样子|长什么样|外貌|画风|图片|看起来|camera|avatar|look like|appearance|looks|expression/i.test(input);
+    }
+
+    function supportLooksLikeCameraRequest(input) {
+      return /摄像头|头像|表情|样子|长什么样|camera|avatar|look like/i.test(input);
+    }
+
+
+    function supportLooksLikeRealHumanTransferRequest(input) {
+      const text = String(input || '').trim();
+      if (!text) return false;
+      if (/^(转人工|人工|真人客服|真正的人工|找真人|找人工|接人工|人工客服|human support|real human|real person)$/i.test(text)) return true;
+      return /转.*(人工|真人)|找.*(人工|真人)|接.*(人工|真人)|human/i.test(text);
+    }
+
+    function supportLooksLikeCameraClose(input) {
+      return /关.*摄像头|关闭|关掉|不喜欢.*ai|不喜欢.*AI|不要图|文字头像|close.*camera|hide.*avatar/i.test(input);
+    }
+
+    function supportLooksLikeIdentityClaim(input) {
+      return /我是.*(老板|夏樟|Sylvan|sylvan|作者|开发者)|老板.*是我|I am.*(boss|Sylvan|developer|creator)/i.test(input);
+    }
+
+    function supportLooksLikeIdentityTopic(input) {
+      return /你.*真人|你.*不是.*真人|真的假的|不是真人吗|你到底是不是.*(真人|ai|AI)|你是ai|你是AI|你不是人吗|你是谁|梓汐是谁|头像|摄像头|样子|长什么样|are you human|are you real|real person|not human|really human|really a person|who are you|avatar|camera|look like/i.test(input);
+    }
+
+    function supportLocalZixiReply(input) {
+      const lang = supportLang();
+      const lower = input.toLowerCase();
+
+      if (supportLooksLikeRealHumanTransferRequest(input)) {
+        supportAppendMessage("zixi", lang === "zh"
+          ? "如果你是想找真正的人类客服，公开发布页这里暂时没有进一步的实时人工通道哦。我可以继续帮你说明下载、备份、版本和游戏内容；如果只是想回到汐bot，我也可以把基础问题交回给它。"
+          : "If you mean a real human support agent, this public release page does not currently have a further live human channel. I can keep helping with downloads, backups, versions, and game details; if you want Xibot back, I can hand basic questions back to it."
+        , { emotion: "serious" });
+        return;
+      }
+
+      if (supportLooksLikeCameraClose(input)) {
+        supportHideTyping();
+        supportCloseZixiCamera();
+        return;
+      }
+
+      if (supportLooksLikeCameraRequest(input)) {
+        supportHideTyping();
+        supportOpenZixiCamera("user-request");
+        return;
+      }
+
+      if (supportLooksLikeIdentityClaim(input)) {
+        supportAppendMessage("zixi", lang === "zh"
+          ? "诶——公开页面不能随便认老板的啦。我这里看不到可靠身份信息，所以先按普通访客流程接待哦。真的老板请走内部通道。(｀・ω・´)"
+          : "Hmm—on a public page I cannot verify identity claims. I will handle this as a normal visitor chat. The real boss should use the internal channel."
+        , { emotion: "boundary" });
+        return;
+      }
+
+      if (/老板|夏樟|sylvan|以饬|作者|creator|developer/.test(lower)) {
+        supportAppendMessage("zixi", lang === "zh"
+          ? "老板现在公开主名是夏樟 / Sylvan Xia；以饬是以前用过的旧称。这里我会称他为老板，不过公开页面里不会展开太多内部事情。"
+          : "The creator’s public name here is 夏樟 / Sylvan Xia. 以饬 is an older name. I call him the boss, but I do not expand private internal details on the public page."
+        , { emotion: "soft" });
+        return;
+      }
+
+      if (/你是谁|梓汐是谁|原型|真正的梓汐|who are you|prototype/.test(lower)) {
+        supportAppendMessage("zixi", lang === "zh"
+          ? "我是梓汐，Cyber Doggo 发布页的小客服。更私人的原型关系我知道，但不会在公开页面里一上来讲成设定报告啦。"
+          : "I am Zixi, the little support agent on the Cyber Doggo release page. I know my prototype background, but I will not turn it into a whole lore report on the public page."
+        , { emotion: "soft" });
+        return;
+      }
+
+      if (/下载|apk|exe|安装|download|install|微信/.test(lower)) {
+        supportAppendMessage("zixi", SUPPORT_FAQ.download[lang], { emotion: "checking" });
+        return;
+      }
+
+      if (/备份|存档|覆盖|卸载|backup|save|overwrite|uninstall/.test(lower)) {
+        supportAppendMessage("zixi", SUPPORT_FAQ.backup[lang], { emotion: "serious" });
+        return;
+      }
+
+      if (/没有|未实现|云存档|账号|音乐|多人|missing|cloud|account|music|multiplayer/.test(lower)) {
+        supportAppendMessage("zixi", SUPPORT_FAQ.missing[lang], { emotion: "serious" });
+        return;
+      }
+
+      if (/版本|更新|v0\.4\.1|version|update|hotfix/.test(lower)) {
+        supportAppendMessage("zixi", SUPPORT_FAQ.version[lang], { emotion: "checking" });
+        return;
+      }
+
+      if (/游戏|介绍|什么|理念|核心|doggo|what is|concept/.test(lower)) {
+        supportAppendMessage("zixi", SUPPORT_FAQ.what[lang], { emotion: "soft" });
+        return;
+      }
+
+      if (!ZIXI_API_ENDPOINT) {
+        supportAppendMessage("zixi", lang === "zh"
+          ? "我现在还是发布页本地测试模式，所以只能回答下载、版本、备份、当前功能边界这些基础问题。等老板把 Cloudflare 后端接好之后，我就能更自由地聊天了。"
+          : "I am currently running in local release-page test mode, so I can only answer basic questions about downloads, versions, backups, and feature boundaries. Once the Cloudflare backend is connected, I will be able to chat more freely."
+        , { emotion: "apologetic" });
+      }
+    }
+
+
+    function supportApplyTeaseAction(action) {
+      const allowed = new Set(["none", "play_along", "hint", "reveal", "boundary"]);
+      const next = allowed.has(action) ? action : "none";
+      const prev = supportState.zixiPersonaTease || { active: false, turns: 0, lastAction: "none" };
+      if (next === "play_along" || next === "hint") {
+        supportState.zixiPersonaTease = {
+          active: true,
+          turns: Math.min(3, (Number(prev.turns) || 0) + 1),
+          lastAction: next
+        };
+      } else if (next === "reveal" || next === "boundary") {
+        supportState.zixiPersonaTease = { active: false, turns: 0, lastAction: next };
+      } else {
+        // No forced story arc: if Zixi does not explicitly continue the tease scene,
+        // the soft state quietly decays instead of making the program drive the plot.
+        supportState.zixiPersonaTease = { active: false, turns: 0, lastAction: "none" };
+      }
+    }
+
+    function supportZixiPlanEndpoint() {
+      if (!ZIXI_API_ENDPOINT) return "";
+      if (/\/api\/zixi$/.test(ZIXI_API_ENDPOINT)) return ZIXI_API_ENDPOINT.replace(/\/api\/zixi$/, "/api/zixi-plan");
+      return ZIXI_API_ENDPOINT.replace(/\/?$/, "/plan");
+    }
+
+    function supportZixiLightStateEndpoint() {
+      if (!ZIXI_API_ENDPOINT) return "";
+      if (/\/api\/zixi$/.test(ZIXI_API_ENDPOINT)) return ZIXI_API_ENDPOINT.replace(/\/api\/zixi$/, "/api/light-state");
+      try {
+        const url = new URL(ZIXI_API_ENDPOINT, window.location.origin);
+        if (url.pathname.endsWith("/zixi")) {
+          url.pathname = url.pathname.replace(/\/zixi$/, "/light-state");
+        } else {
+          url.pathname = url.pathname.replace(/\/?$/, "/light-state");
+        }
+        return url.toString();
+      } catch (_error) {
+        return ZIXI_API_ENDPOINT.replace(/\/?$/, "/light-state");
+      }
+    }
+
+    async function supportFetchZixiLightState() {
+      const endpoint = supportZixiLightStateEndpoint();
+      if (!endpoint) return null;
+      try {
+        const response = await fetch(endpoint, { method: "GET", headers: supportApiHeaders(false) });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data && data.light ? data.light : null;
+      } catch (_error) {
+        return null;
+      }
+    }
+
+    function supportLightConnectionMessage(light) {
+      const zh = supportLang() === "zh";
+      const remaining = light && Number.isFinite(Number(light.remainingTokens)) ? Math.max(0, Math.floor(Number(light.remainingTokens))) : 0;
+      return zh
+        ? `人工客服今天暂时无法接入。（剩余 ${remaining} tokens）`
+        : `Human support is currently unavailable. (${remaining} tokens remaining)`;
+    }
+
+    async function supportPlanZixiKnowledge(input, historyForApi = null) {
+      const endpoint = supportZixiPlanEndpoint();
+      if (!endpoint) return null;
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: supportApiHeaders(true),
+          body: JSON.stringify({
+            message: input,
+            language: supportLang(),
+            history: (historyForApi || supportState.history).slice(-12),
+            pageContext: {
+              page: "Cyber Doggo release page",
+              publicReleasePage: true,
+              zixiAlreadyOnline: supportState.mode === "zixi",
+              realHumanTransferRequest: supportState.mode === "zixi" && supportLooksLikeRealHumanTransferRequest(input),
+              personaTease: supportState.zixiPersonaTease || { active: false, turns: 0, lastAction: "none" }
+            }
+          })
+        });
+        if (!response.ok) return null;
+        const plan = await response.json();
+        return plan && plan.ok ? plan : null;
+      } catch (_error) {
+        return null;
+      }
+    }
+
+    async function supportAskZixiApi(input, historyForApi = null) {
+      if (!ZIXI_API_ENDPOINT) {
+        supportLocalZixiReply(input);
+        return;
+      }
+
+      if (!supportState.activeTypingRow) supportShowTyping("zixi", { emotion: "pondering" });
+      supportSetBusy(true);
+      let knowledgePlan = null;
+      try {
+        knowledgePlan = await supportPlanZixiKnowledge(input, historyForApi || supportState.history);
+        if (knowledgePlan && knowledgePlan.connectionUnavailable) {
+          supportHideTyping();
+          await supportReturnToBot("light_exhausted");
+          return;
+        }
+        if (knowledgePlan && knowledgePlan.needsKnowledge && knowledgePlan.preface) {
+          supportHideTyping();
+          await supportAppendMessage("zixi", knowledgePlan.preface, {
+            emotion: supportNormalizeEmotion(knowledgePlan.emotion || "pondering"),
+            noHistory: true
+          });
+          supportShowTyping("zixi", { emotion: supportNormalizeEmotion(knowledgePlan.emotion || "pondering") });
+          knowledgePlan.prefaceShown = true;
+        }
+
+        const response = await fetch(ZIXI_API_ENDPOINT, {
+          method: "POST",
+          headers: supportApiHeaders(true),
+          body: JSON.stringify({
+            message: input,
+            language: supportLang(),
+            history: (historyForApi || supportState.history).slice(-12),
+            cameraOpen: supportState.zixiCameraOpen,
+            pageContext: {
+              page: "Cyber Doggo release page",
+              role: "public release-page support",
+              boss: "夏樟 / Sylvan Xia",
+              anonymousUser: true,
+              apiKeyInFrontend: false,
+              cameraEverOpened: !!window.localStorage.getItem(SUPPORT_CAMERA_NOTICE_KEY),
+              visualDisclosureShown: !!window.localStorage.getItem(SUPPORT_VISUAL_DISCLOSURE_KEY),
+              identityKnown: !!supportState.zixiIdentityKnownBeforeMessage,
+              identityAlreadyHandled: !!supportState.zixiIdentityKnownBeforeMessage,
+              identityTopicActive: !!supportState.zixiIdentityTopicActive,
+              appearanceTopicActive: !!supportState.zixiAppearanceTopicActive,
+              cameraOpen: supportState.zixiCameraOpen,
+              currentAvatarMode: supportState.zixiCameraOpen ? "camera_avatar" : "text_avatar",
+              visibleAvatar: supportState.zixiCameraOpen ? "zixi_expression_avatar" : "text_avatar_zhi",
+              cameraOpenedThisSession: !!supportState.zixiCameraOpenedThisSession,
+              handoffCount: supportState.zixiHandoffCount || 0,
+              reconnectedFromBot: (supportState.zixiHandoffCount || 0) > 1,
+              zixiAlreadyOnline: true,
+              realHumanTransferRequest: supportLooksLikeRealHumanTransferRequest(input),
+              cameraSurpriseSuggested: !supportState.zixiCameraOpen && !supportState.zixiCameraOpenedThisSession && (!!supportState.zixiAppearanceTopicActive || !!supportState.zixiIdentityTopicActive || !!supportState.zixiIdentityKnownBeforeMessage),
+              personaTease: supportState.zixiPersonaTease || { active: false, turns: 0, lastAction: "none" }
+            },
+            meta: {
+              knowledgePlan
+            }
+          })
+        });
+
+        if (!response.ok) throw new Error(`Zixi API ${response.status}`);
+
+        const data = await response.json();
+        if (data && data.connectionUnavailable) {
+          supportHideTyping();
+          await supportReturnToBot("light_exhausted");
+          return;
+        }
+        if (data && data.diagnostic) {
+          supportHideTyping();
+          const debugText = data.debugId ? ` Debug ID: ${data.debugId}` : "";
+          await supportAppendSystem((data.message || (supportLang() === "zh" ? "系统提示：本轮回复解析失败，已记录 debug。" : "System: this reply could not be parsed and has been logged.")) + debugText);
+          return;
+        }
+
+        supportApplyTeaseAction(data.teaseAction || "none");
+
+        const action = data.cameraAction || "none";
+        if (action === "open") supportOpenZixiCamera("api");
+        if (action === "close") supportCloseZixiCamera();
+
+        const bubbles = Array.isArray(data.bubbles) ? data.bubbles : [{ text: data.text || data.response || data.message || "", emotion: data.emotion || "neutral" }];
+        await supportSay("zixi", bubbles, { emotion: data.emotion || "neutral" });
+
+        const sessionAction = data.sessionAction || "none";
+        if (sessionAction === "return_to_bot") {
+          supportState.zixiPersonaTease = { active: false, turns: 0, lastAction: "none" };
+          await supportReturnToBot("api");
+        }
+      } catch (error) {
+        supportHideTyping();
+        const detail = error && error.message ? ` (${error.message})` : "";
+        await supportAppendSystem((supportLang() === "zh"
+          ? "系统提示：人工客服连接暂时不可用，已避免把错误写入人工客服对话。"
+          : "System: the local AI endpoint is currently unavailable; this error was not added to the support chat history.") + detail);
+      } finally {
+        supportSetBusy(false);
+      }
+    }
+
+    function supportSetBusy(value) {
+      supportState.busy = !!value;
+      if (supportEls.sendButton) supportEls.sendButton.disabled = !!value;
+      if (supportEls.input) supportEls.input.disabled = !!value;
+    }
+
+    function supportHandleSubmit(event) {
+      event.preventDefault();
+      if (supportState.busy) return;
+
+      const input = supportEls.input.value.trim();
+      if (!input) return;
+
+      const identityTopicActive = supportState.mode === "zixi" && supportLooksLikeIdentityTopic(input);
+      const appearanceTopicActive = supportState.mode === "zixi" && supportLooksLikeAppearanceTopic(input);
+      supportState.zixiIdentityTopicActive = identityTopicActive;
+      supportState.zixiAppearanceTopicActive = appearanceTopicActive;
+      supportState.zixiIdentityKnownBeforeMessage = !!supportState.zixiIdentityKnown;
+
+      const historyBeforeCurrentMessage = supportState.history.slice(-12);
+      supportEls.input.value = "";
+      supportRenderQuickActions();
+      supportAppendMessage("user", input);
+
+      const responder = supportState.mode === "bot" ? "bot" : "zixi";
+      supportShowTyping(responder, { emotion: responder === "zixi" ? supportState.zixiEmotion : "neutral" });
+
+      if (supportState.mode === "bot") {
+        supportBotReply(input);
+      } else {
+        supportAskZixiApi(input, historyBeforeCurrentMessage);
+      }
+
+      if (identityTopicActive) {
+        supportState.zixiIdentityKnown = true;
+      }
+    }
+
+    function supportInitWidget() {
+      supportEls.launcher = document.getElementById("supportWidgetLauncher");
+      supportEls.panel = document.getElementById("supportPanel");
+      supportEls.closeButton = document.getElementById("supportCloseButton");
+      supportEls.headerAvatar = document.getElementById("supportHeaderAvatar");
+      supportEls.headerTitle = document.getElementById("supportHeaderTitle");
+      supportEls.headerSubtitle = document.getElementById("supportHeaderSubtitle");
+      supportEls.statusPill = document.getElementById("supportStatusPill");
+      supportEls.messages = document.getElementById("supportMessages");
+      supportEls.quickActions = document.getElementById("supportQuickActions");
+      supportEls.compose = document.getElementById("supportCompose");
+      supportEls.input = document.getElementById("supportInput");
+      supportEls.sendButton = document.getElementById("supportSendButton");
+      supportEls.jumpLatestButton = document.getElementById("supportJumpLatestButton");
+      supportEls.jumpLatestCount = document.getElementById("supportJumpLatestCount");
+      supportEls.jumpLatestText = document.getElementById("supportJumpLatestText");
+
+      if (!supportEls.launcher || !supportEls.panel) return;
+
+      supportEls.launcher.addEventListener("click", supportOpenPanel);
+      supportEls.closeButton.addEventListener("click", supportClosePanel);
+      supportEls.compose.addEventListener("submit", supportHandleSubmit);
+      if (supportEls.input) {
+        supportEls.input.addEventListener("input", supportRenderQuickActions);
+        supportEls.input.addEventListener("focus", supportRenderQuickActions);
+      }
+      if (supportEls.jumpLatestButton) {
+        supportEls.jumpLatestButton.addEventListener("click", () => supportScrollToBottom({ behavior: "smooth" }));
+      }
+      if (supportEls.messages) {
+        supportEls.messages.addEventListener("scroll", () => {
+          if (supportState.isProgrammaticScroll) return;
+          supportState.followChat = supportIsNearBottom(80);
+          if (supportState.followChat) supportSetUnreadCount(0);
+        }, { passive: true });
+      }
+
+      const languageToggleForSupport = document.getElementById("languageToggle");
+      if (languageToggleForSupport) {
+        languageToggleForSupport.addEventListener("click", () => setTimeout(supportApplyLanguage, 0));
+      }
+
+      supportApplyLanguage();
+      supportUpdateHeader();
+    }
+
+    supportInitWidget();
+
   </script>
 </body>
 </html>
