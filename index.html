@@ -2581,14 +2581,33 @@
       if (withJson) headers["Content-Type"] = "application/json";
       return headers;
     }
-    const ZIXI_API_ENDPOINT = window.ZIXI_API_ENDPOINT || (() => {
+    function supportNormalizeApiEndpoint(value) {
+      return typeof value === "string" ? value.trim().replace(/\/+$/, "") : "";
+    }
+    const ZIXI_API_ENDPOINTS = (() => {
+      const endpoints = [];
+      const add = (value) => {
+        const endpoint = supportNormalizeApiEndpoint(value);
+        if (endpoint && !endpoints.includes(endpoint)) endpoints.push(endpoint);
+      };
+      add(window.ZIXI_API_ENDPOINT);
+      add(window.ZIXI_API_BACKUP_ENDPOINT);
       try {
         const stored = window.localStorage.getItem("cyber-doggo-zixi-api-endpoint");
-        if (stored) return stored;
+        if (stored) add(stored);
       } catch (_error) {}
-      const isLocalHost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
-      return isLocalHost ? "/api/zixi" : "";
+      // Public builds must use the configured Cloudflare/Vercel endpoint from zixi-config.js.
+      // Do not auto-fall back to a same-origin local API in the GitHub Pages release repo.
+      return endpoints;
     })();
+    let ZIXI_API_ENDPOINT = ZIXI_API_ENDPOINTS[0] || "";
+    function supportSwitchToNextApiEndpoint() {
+      const currentIndex = ZIXI_API_ENDPOINTS.indexOf(ZIXI_API_ENDPOINT);
+      const next = ZIXI_API_ENDPOINTS[currentIndex + 1];
+      if (!next) return false;
+      ZIXI_API_ENDPOINT = next;
+      return true;
+    }
 
     const SUPPORT_I18N = {
       zh: {
@@ -2604,7 +2623,7 @@
         "input.placeholderZixi": "和人工客服说点什么，或问下载 / 版本 / 备份…",
         "input.placeholderConfirm": "再次发送“转人工”确认，或发送“取消”取消。",
         "input.send": "发送",
-        "system.zixiJoined": "感谢等待，人工客服42号已对接。",
+        "system.zixiJoined": "感谢等待，人工客服已接入。",
         "system.supportEnded": "人工服务已结束。",
         "bot.returned": "汐bot接回 FAQ 服务。汐bot在。ᗜˬᗜ",
         "system.cameraOpened": "摄像头已打开",
@@ -2629,6 +2648,16 @@
         "smart.changelog.desc": "更新记录",
         "smart.safety": "安装包安全吗？",
         "smart.safety.desc": "确认来源",
+        "smart.downloadIssue": "下载打不开怎么办？",
+        "smart.downloadIssue.desc": "浏览器 / 微信",
+        "smart.lostSave": "存档丢了怎么办？",
+        "smart.lostSave.desc": "先看备份",
+        "smart.privacy": "存档会上传吗？",
+        "smart.privacy.desc": "本地为主",
+        "smart.network": "需要联网吗？",
+        "smart.network.desc": "AI / API",
+        "smart.feedback": "怎么反馈问题？",
+        "smart.feedback.desc": "当前入口",
         "smart.missing": "现在还没有什么？",
         "smart.missing.desc": "还没做的",
         "smart.diary": "日记系统是什么？",
@@ -2657,7 +2686,7 @@
         "input.placeholderZixi": "Talk to human support, or ask about downloads / versions / backups…",
         "input.placeholderConfirm": "Type “human support” again to confirm, or “cancel” to cancel.",
         "input.send": "Send",
-        "system.zixiJoined": "Thanks for waiting. Human support #42 is connected.",
+        "system.zixiJoined": "Thanks for waiting. Human support is connected.",
         "system.supportEnded": "Human support has ended.",
         "bot.returned": "Xibot is back for FAQ service. Xibot is here. ᗜˬᗜ",
         "system.cameraOpened": "Camera opened",
@@ -2682,6 +2711,16 @@
         "smart.changelog.desc": "notes",
         "smart.safety": "Is the installer safe?",
         "smart.safety.desc": "check source",
+        "smart.downloadIssue": "Download will not open?",
+        "smart.downloadIssue.desc": "browser / WeChat",
+        "smart.lostSave": "Lost save?",
+        "smart.lostSave.desc": "check backups",
+        "smart.privacy": "Are saves uploaded?",
+        "smart.privacy.desc": "mostly local",
+        "smart.network": "Need internet?",
+        "smart.network.desc": "AI / API",
+        "smart.feedback": "How to report issues?",
+        "smart.feedback.desc": "current channels",
         "smart.missing": "What is not included yet?",
         "smart.missing.desc": "not yet",
         "smart.diary": "What are diaries?",
@@ -3146,12 +3185,16 @@
         en: "Keyword found: game introduction.\nCyber Doggo is a virtual pet game about time, memory, a dog, and diaries.\nYou care for it, adventure with it, and watch its experiences settle into diaries. You can ask about memory or adventures next. ᗜˬᗜ"
       },
       download: {
-        zh: "检索到关键词：下载。\nAndroid 请下载 APK，Windows 请下载 EXE。\n如果下载链接打不开，建议用系统浏览器重新打开本页，再点下载按钮。ᗜ.ᗜ",
-        en: "Keyword found: download.\nUse the APK for Android and the EXE for Windows.\nIf a download link does not open, reopen this page in your system browser and try the button again. ᗜ.ᗜ"
+        zh: "检索到关键词：下载。\nAndroid 手机下载 APK，Windows 电脑下载 EXE。\n请尽量从这个官方发布页进入下载，不建议安装陌生人转发的安装包。ᗜˬᗜ",
+        en: "Keyword found: download.\nDownload the APK for Android phones and the EXE for Windows PCs.\nUse this official release page when possible, and avoid installers forwarded by unknown sources. ᗜˬᗜ"
+      },
+      downloadIssue: {
+        zh: "检索到关键词：下载问题。\n如果微信内打不开下载，请点右上角菜单，选择在浏览器中打开本页。\n如果浏览器拦截或链接没反应，换系统浏览器重新打开发布页，再点 APK / EXE 下载按钮。",
+        en: "Keyword found: download issue.\nIf the download will not open inside WeChat, use the menu and open this page in your browser.\nIf a browser blocks the link or nothing happens, reopen the release page in your system browser and press the APK / EXE button again."
       },
       install: {
-        zh: "检索到关键词：安装。\nAndroid 安装 APK；如果提示未知来源，请允许当前浏览器或文件管理器安装。\nWindows 运行 EXE；如果有系统安全提示，请先确认文件来自本发布页。",
-        en: "Keyword found: installation.\nAndroid: install the APK and allow this source if asked.\nWindows: run the EXE. If a warning appears, first verify that the file came from this release page."
+        zh: "检索到关键词：安装。\nAndroid 安装 APK；如果提示未知来源，请允许当前浏览器或文件管理器安装。\nWindows 运行 EXE；如果有系统安全提示，请先确认文件来自本发布页。更新前请先备份。",
+        en: "Keyword found: installation.\nAndroid: install the APK and allow this source if asked.\nWindows: run the EXE. If a warning appears, first verify that the file came from this release page. Back up before updating."
       },
       backup: {
         zh: "检索到关键词：备份。\n更新前建议先备份存档。\n通常可以直接覆盖安装；不要先卸载，卸载可能带走本地存档。ᗜ_ᗜ",
@@ -3160,6 +3203,10 @@
       save: {
         zh: "检索到关键词：存档。\n目前主要是本地存档。电脑端可以导出/导入，手机端请用游戏内的分享备份。\n发布页读不到你的存档，所以汐bot不能帮你检查具体存档内容。",
         en: "Keyword found: saves.\nSaves are mostly local. Desktop supports export/import; Android uses the in-game backup sharing flow.\nThis release page cannot read your save, so Xibot cannot inspect specific save data."
+      },
+      lostSave: {
+        zh: "检索到关键词：存档恢复。\n发布页不能读取设备里的本地存档，也不能保证恢复已经丢失的存档。\n如果你之前导出过备份，请在游戏内导入/恢复；如果没有备份，先不要卸载或清理应用数据。",
+        en: "Keyword found: save recovery.\nThis release page cannot read local saves on your device, and it cannot guarantee recovery of an already lost save.\nIf you exported a backup, import/restore it in game. If not, do not uninstall or clear app data yet."
       },
       version: {
         zh: "检索到关键词：版本。\n当前发布页主推 v0.4.1 稳定性热修复。\n如果你是从旧版更新，建议先备份，再覆盖安装。ᗜˬᗜ",
@@ -3170,12 +3217,12 @@
         en: "Keyword found: changelog.\nRecent notes are shown on this page.\nFor older history, use the full changelog link."
       },
       safety: {
-        zh: "检索到关键词：安全。\n请尽量只从这个发布页下载。\n如果系统弹出风险提示，先核对来源；确认是本页下载后再继续安装。ᗜ_ᗜ",
-        en: "Keyword found: safety.\nDownload from this release page when possible.\nIf your system shows a warning, verify the source first, then continue only if it came from this page. ᗜ_ᗜ"
+        zh: "检索到关键词：安全。\n请尽量只从这个官方发布页下载，不要安装陌生转发包。\n如果系统、浏览器或杀软弹出风险提示，先核对来源并备份存档；汐bot不能对所有设备环境做绝对安全承诺。ᗜ_ᗜ",
+        en: "Keyword found: safety.\nDownload from this official release page when possible, and avoid installers forwarded by unknown sources.\nIf your system, browser, or antivirus shows a warning, verify the source and back up first; Xibot cannot make an absolute safety promise for every device environment. ᗜ_ᗜ"
       },
       missing: {
-        zh: "检索到关键词：未实现功能。\n测试版还没有账号、云存档、多人、音乐、留言区或反馈表单。\n未来计划不等于已经做好。汐bot会按当前版本回答。ᗜ_ᗜ",
-        en: "Keyword found: not-yet features.\nNo accounts, cloud saves, multiplayer, music, comments, or feedback form yet.\nPlans are not current features. Xibot answers based on the current build. ᗜ_ᗜ"
+        zh: "检索到关键词：未实现功能。\n测试版还没有账号、云存档、自动多端同步、多人、音乐、留言区或反馈表单。\n未来计划不等于已经做好。汐bot会按当前版本回答。ᗜ_ᗜ",
+        en: "Keyword found: not-yet features.\nNo accounts, cloud saves, automatic multi-device sync, multiplayer, music, comments, or feedback form yet.\nPlans are not current features. Xibot answers based on the current build. ᗜ_ᗜ"
       },
       diary: {
         zh: "检索到关键词：日记。\n小狗会把照料、冒险和心情写进日记。\n日记以后也可能沉进周记、回忆和长期记忆里。你也可以问我“记忆系统”。",
@@ -3194,12 +3241,24 @@
         en: "Keyword found: adventure.\nAdventures can leave stories, items, and traces, and may affect diaries, memory, and personality.\nTest builds may still glitch, so back up before serious testing. ᗜ_ᗜ"
       },
       android: {
-        zh: "检索到关键词：Android。\nAndroid 请安装 APK。失败时先检查未知来源权限。\n如果遇到签名冲突，卸载前一定先备份。ᗜ_ᗜ",
-        en: "Keyword found: Android.\nAndroid uses the APK. If installation fails, check unknown-source permission first.\nIf there is a signature conflict, back up before uninstalling. ᗜ_ᗜ"
+        zh: "检索到关键词：Android。\nAndroid 请安装 APK。失败时先检查是否允许当前浏览器或文件管理器安装未知来源应用。\n如果遇到签名冲突或覆盖安装失败，卸载前一定先用游戏内分享备份导出存档。ᗜ_ᗜ",
+        en: "Keyword found: Android.\nAndroid uses the APK. If installation fails, first allow unknown-source installation for the current browser or file manager.\nIf there is a signature conflict or install-over failure, export a backup with the in-game share-backup flow before uninstalling. ᗜ_ᗜ"
       },
       windows: {
-        zh: "检索到关键词：Windows。\nWindows 请安装 EXE。\n安全提示通常和未签名、小众下载量有关；确认来源是本发布页后再继续。",
-        en: "Keyword found: Windows.\nWindows uses the EXE installer.\nSecurity warnings often come from unsigned or low-download apps; verify this release page as the source before continuing."
+        zh: "检索到关键词：Windows。\nWindows 请安装 EXE。\n如果 SmartScreen、浏览器或杀软提示风险，通常可能和未签名、小众下载量或新发布有关；请先确认来源是本发布页，再谨慎继续。",
+        en: "Keyword found: Windows.\nWindows uses the EXE installer.\nIf SmartScreen, your browser, or antivirus shows a warning, it may be due to unsigned / low-download / newly released builds; verify this release page as the source before continuing carefully."
+      },
+      privacy: {
+        zh: "检索到关键词：隐私与存档。\n当前存档主要在本地设备上，发布页汐bot和梓汐都不能直接读取你的狗子、日记、背包或存档内容。\n如果以后加入云端功能，也应该重新明确说明。",
+        en: "Keyword found: privacy and saves.\nCurrent saves are mostly on your local device. Xibot and Zixi on this release page cannot directly read your dog, diaries, inventory, or save data.\nIf cloud features are added later, they should be explained separately."
+      },
+      network: {
+        zh: "检索到关键词：联网 / AI。\nCyber Doggo 的生命感依赖 AI 生成，所以部分体验需要可用的 AI/API 网络环境。\n如果网络、API key 或服务额度不可用，AI 相关内容可能无法正常生成。",
+        en: "Keyword found: network / AI.\nCyber Doggo's sense of life depends on AI generation, so parts of the experience need a working AI/API network environment.\nIf the network, API key, or quota is unavailable, AI-generated content may not work normally."
+      },
+      feedback: {
+        zh: "检索到关键词：反馈。\n当前发布页没有留言区、用户反馈模块或进一步真人客服入口。\n页面主要提供下载、安装说明、更新日志和 GitHub 仓库入口；如果只是下载、安装、版本或备份问题，汐bot和梓汐可以继续在这里说明。",
+        en: "Keyword found: feedback.\nThis release page currently has no comments, feedback form, or further live human-support channel.\nIt mainly provides downloads, installation notes, changelog, and the GitHub repository; for download, install, version, or backup questions, Xibot and Zixi can keep helping here."
       },
       human: {
         zh: "检索到关键词：人工客服。\n如果需要接入，请再发送一次“转人工”确认；如果不需要，请发送“取消”。ᗜ.ᗜ",
@@ -3216,22 +3275,27 @@
     };
 
     const SUPPORT_FAQ_RULES = [
-      { key: "download", regex: /下载|download|链接|打不开|微信|浏览器|release/i },
-      { key: "install", regex: /安装|未知来源|打开|运行|install|setup|permission|权限/i },
-      { key: "android", regex: /android|安卓|手机|apk|签名冲突|INSTALL_FAILED/i },
-      { key: "windows", regex: /windows|电脑|exe|安装包|安全提示|smart.?screen|杀软|报毒/i },
+      { key: "changelog", regex: /更新日志|更新内容|历史版本|日志|changelog|release notes?|patch notes?/i },
+      { key: "lostSave", regex: /存档.*(丢|没了|消失|恢复|找回)|丢.*存档|恢复.*存档|save.*(lost|missing|gone|recover|restore)|lost save/i },
+      { key: "downloadIssue", regex: /下载.*(打不开|失败|没反应|拦截)|链接.*(打不开|失效)|微信.*(打不开|下载)|浏览器.*(拦截|打不开)|download.*(fail|blocked|not open|doesn.?t open)|wechat|browser.*block/i },
+      { key: "android", regex: /android|安卓|手机|apk|未知来源|签名冲突|覆盖安装失败|INSTALL_FAILED|unknown source|signature conflict/i },
+      { key: "windows", regex: /windows|电脑|exe|smart.?screen|杀软|报毒|安全提示|defender|antivirus/i },
+      { key: "safety", regex: /安全吗|安全|病毒|风险|官方|安装包.*安全|safe|virus|warning|source|official/i },
       { key: "backup", regex: /备份|覆盖|卸载|更新前|backup|overwrite|uninstall/i },
-      { key: "save", regex: /存档|导入|导出|丢失|恢复|分享备份|save|import|export|transfer/i },
+      { key: "save", regex: /存档|导入|导出|分享备份|save|import|export|transfer/i },
+      { key: "install", regex: /安装|打开|运行|install|setup|permission|权限/i },
+      { key: "network", regex: /联网|网络|离线|api|apikey|api key|deepseek|额度|国内|中国大陆|internet|network|offline|quota|mainland|china/i },
+      { key: "privacy", regex: /隐私|上传|读取.*存档|读.*日记|本地|数据|privacy|upload|local|read.*save|data/i },
+      { key: "feedback", regex: /反馈|留言|评论|联系作者|找老板|问题反馈|feedback|comment|contact|report issue/i },
+      { key: "missing", regex: /没有|未实现|能不能|有没有|云存档|账号|多人|音乐|反馈表单|留言区|missing|cloud|account|multiplayer|music|feedback form/i },
       { key: "version", regex: /版本|更新|v0\.4\.1|hotfix|新版|version|update/i },
-      { key: "changelog", regex: /日志|更新内容|历史版本|changelog|release note/i },
-      { key: "safety", regex: /安全吗|安全|病毒|风险|提示|签名|官方|safe|virus|warning|source/i },
-      { key: "missing", regex: /没有|未实现|能不能|有没有|云存档|账号|多人|音乐|反馈|留言|missing|cloud|account|multiplayer|music|feedback/i },
       { key: "diary", regex: /日记|周记|回忆|diary|weekly|memoir/i },
       { key: "memory", regex: /记忆|遗忘|冷档案|memory|forget|archive/i },
       { key: "personality", regex: /人格|性格|成长|变化|personality|trait|growth/i },
       { key: "adventure", regex: /冒险|物品|背包|故事|adventure|item|inventory|story/i },
       { key: "language", regex: /英文|中文|语言|language|english|translation/i },
-      { key: "human", regex: /人工|真人|客服|转人工|human|support|real person/i },
+      { key: "human", regex: /人工|真人|客服|转人工|human support|real person|real human|live agent/i },
+      { key: "download", regex: /下载|download|链接|release/i },
       { key: "what", regex: /是什么|介绍|怎么玩|核心|理念|小狗|doggo|what is|concept|about/i }
     ];
 
@@ -3259,7 +3323,7 @@
         }
       }
       if (!results.length && text.length >= 2) results.push({ key: "what" });
-      const extras = ["download", "backup", "missing", "version", "save", "safety"];
+      const extras = ["download", "backup", "downloadIssue", "save", "safety", "privacy"];
       for (const key of extras) {
         if (results.length >= 4) break;
         if (!results.some((item) => item.key === key)) results.push({ key });
@@ -3279,12 +3343,12 @@
     function supportIsTransferRequest(input) {
       const text = String(input || '').trim();
       if (!text) return false;
-      return /^(转人工|人工|人工客服|真人客服|找人工|接人工|接入人工|human support|human|real person|real human)$/i.test(text)
-        || /转.*(人工|真人)|找.*(人工|真人)|接.*(人工|真人)|human\s+support/i.test(text);
+      return /^(转人工|人工|客服|人工客服|真人客服|找人工|找客服|接人工|接客服|接入人工|human support|support|human|real person|real human|live agent)$/i.test(text)
+        || /(?:转|找|接|连|叫|要).*?(?:人工|真人|客服)|(?:connect|get|talk to|contact).*?(?:human|support|real person|agent)|human\s+support/i.test(text);
     }
 
     function supportIsNegativeTransfer(input) {
-      return /^(取消|不用|先不用|算了|不要|no|n|cancel|not now)$/i.test(String(input || '').trim());
+      return /^(取消|不用|不用了|先不用|算了|不要|停止|no|n|cancel|not now|no thanks|stop)$/i.test(String(input || '').trim());
     }
 
     function supportRequestTransferToZixi() {
@@ -3306,8 +3370,8 @@
       supportRenderQuickActions();
       supportUpdatePlaceholder();
       supportSay("bot", supportLang() === "zh"
-        ? ["收到。", "继续 FAQ 服务。汐bot在。ᗜˬᗜ"]
-        : ["Received.", "FAQ service continues. Xibot is here. ᗜˬᗜ"]
+        ? ["已取消接入人工客服。", "这里继续由汐bot-923提供 FAQ 服务。ᗜˬᗜ"]
+        : ["Human-support connection cancelled.", "Xibot-923 will continue FAQ service here. ᗜˬᗜ"]
       , { emotion: "neutral" });
     }
 
@@ -3364,20 +3428,6 @@
         button.addEventListener("click", () => {
           if (supportState.mode === "zixi") {
             supportRenderQuickActions();
-            return;
-          }
-          if (item.key === "__confirm_transfer") {
-            supportAppendMessage("user", supportLang() === "zh" ? "确认接入" : "Confirm");
-            if (supportEls.input) supportEls.input.value = "";
-            supportRenderQuickActions();
-            supportTransferToZixi();
-            return;
-          }
-          if (item.key === "__cancel_transfer") {
-            supportAppendMessage("user", supportLang() === "zh" ? "取消" : "cancel");
-            if (supportEls.input) supportEls.input.value = "";
-            supportRenderQuickActions();
-            supportCancelTransferToZixi();
             return;
           }
           const label = item.label;
@@ -3828,9 +3878,21 @@
       } catch (error) {
         supportHideTyping();
         const detail = error && error.message ? ` (${error.message})` : "";
+        if (!supportState.apiFallbackRetried && supportSwitchToNextApiEndpoint()) {
+          supportState.apiFallbackRetried = true;
+          await supportAppendSystem(supportLang() === "zh"
+            ? "系统提示：当前线路连接失败，正在尝试备用线路。"
+            : "System: the current support line failed. Trying the backup line.");
+          try {
+            await supportAskZixiApi(input, historyForApi);
+          } finally {
+            supportState.apiFallbackRetried = false;
+          }
+          return;
+        }
         await supportAppendSystem((supportLang() === "zh"
           ? "系统提示：人工客服连接暂时不可用，已避免把错误写入人工客服对话。"
-          : "System: the local AI endpoint is currently unavailable; this error was not added to the support chat history.") + detail);
+          : "System: human support is temporarily unavailable; this error was not added to the support chat history.") + detail);
       } finally {
         supportSetBusy(false);
       }
