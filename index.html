@@ -2602,7 +2602,11 @@
         "status.local": "本地测试",
         "input.placeholder": "请输入关于游戏的问题，或输入转人工…",
         "input.placeholderZixi": "和人工客服说点什么，或问下载 / 版本 / 备份…",
+<<<<<<< HEAD
         "input.placeholderConfirm": "再次发送“转人工”确认，或发送“取消”取消。",
+=======
+        "input.placeholderConfirm": "正在准备接线…",
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
         "input.send": "发送",
         "system.zixiJoined": "感谢等待，人工客服42号已对接。",
         "system.supportEnded": "人工服务已结束。",
@@ -2655,7 +2659,11 @@
         "status.local": "Local test",
         "input.placeholder": "Ask about the game, or type human support…",
         "input.placeholderZixi": "Talk to human support, or ask about downloads / versions / backups…",
+<<<<<<< HEAD
         "input.placeholderConfirm": "Type “human support” again to confirm, or “cancel” to cancel.",
+=======
+        "input.placeholderConfirm": "Preparing the connection…",
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
         "input.send": "Send",
         "system.zixiJoined": "Thanks for waiting. Human support #42 is connected.",
         "system.supportEnded": "Human support has ended.",
@@ -3202,8 +3210,13 @@
         en: "Keyword found: Windows.\nWindows uses the EXE installer.\nSecurity warnings often come from unsigned or low-download apps; verify this release page as the source before continuing."
       },
       human: {
+<<<<<<< HEAD
         zh: "检索到关键词：人工客服。\n如果需要接入，请再发送一次“转人工”确认；如果不需要，请发送“取消”。ᗜ.ᗜ",
         en: "Keyword found: human support.\nTo connect, type “human support” again; to stop, type “cancel”. ᗜ.ᗜ"
+=======
+        zh: "检索到关键词：人工客服。\n请确认是否接入人工客服。ᗜ.ᗜ",
+        en: "Keyword found: human support.\nPlease confirm whether to connect human support. ᗜ.ᗜ"
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
       },
       language: {
         zh: "检索到关键词：语言。\n发布页右上角可以切中文 / English。\n游戏本体的英文版还在计划中；已经生成的历史内容不会被自动翻译。",
@@ -3249,11 +3262,23 @@
     function supportBuildSmartSuggestions(input) {
       const text = String(input || "").trim();
       if (supportState.mode === "zixi") return [];
+<<<<<<< HEAD
       if (supportState.pendingTransfer) return [];
       if (!text) return [];
       const results = [];
       for (const rule of SUPPORT_FAQ_RULES) {
         if (rule.key === "human") continue;
+=======
+      if (supportState.pendingTransfer) {
+        return [
+          { key: "__confirm_transfer", label: supportLang() === "zh" ? "确认接入" : "Confirm", desc: supportLang() === "zh" ? "人工客服" : "human support", primary: true },
+          { key: "__cancel_transfer", label: supportLang() === "zh" ? "先不用" : "Not now", desc: supportLang() === "zh" ? "继续 FAQ" : "FAQ service" }
+        ];
+      }
+      if (!text) return [];
+      const results = [];
+      for (const rule of SUPPORT_FAQ_RULES) {
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
         if (rule.regex.test(text) && SUPPORT_FAQ[rule.key] && !results.some((item) => item.key === rule.key)) {
           results.push({ key: rule.key });
         }
@@ -3276,11 +3301,16 @@
       });
     }
 
+<<<<<<< HEAD
     function supportIsTransferRequest(input) {
       const text = String(input || '').trim();
       if (!text) return false;
       return /^(转人工|人工|人工客服|真人客服|找人工|接人工|接入人工|human support|human|real person|real human)$/i.test(text)
         || /转.*(人工|真人)|找.*(人工|真人)|接.*(人工|真人)|human\s+support/i.test(text);
+=======
+    function supportIsAffirmativeTransfer(input) {
+      return /^(确认|接线|可以|好的|好|yes|y|confirm|connect|ok|okay)$/i.test(String(input || '').trim());
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
     }
 
     function supportIsNegativeTransfer(input) {
@@ -3296,8 +3326,13 @@
       supportRenderQuickActions();
       supportUpdatePlaceholder();
       supportSay("bot", supportLang() === "zh"
+<<<<<<< HEAD
         ? ["检索到关键词：人工客服。", "如果需要接入，请再发送一次“转人工”确认；如果不需要，请发送“取消”。ᗜ.ᗜ"]
         : ["Keyword found: human support.", "To connect, type “human support” again; to stop, type “cancel”. ᗜ.ᗜ"]
+=======
+        ? ["检索到关键词：人工客服。", "请确认是否接入人工客服。ᗜ.ᗜ"]
+        : ["Keyword found: human support.", "Please confirm whether to connect human support. ᗜ.ᗜ"]
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
       , { emotion: "neutral" });
     }
 
@@ -3315,7 +3350,11 @@
       const lang = supportLang();
 
       if (supportState.pendingTransfer) {
+<<<<<<< HEAD
         if (supportIsTransferRequest(input)) {
+=======
+        if (/转人工/i.test(input)) {
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
           supportTransferToZixi();
           return;
         }
@@ -3323,6 +3362,7 @@
           supportCancelTransferToZixi();
           return;
         }
+<<<<<<< HEAD
         supportSay("bot", lang === "zh"
           ? ["还没有接入人工客服。", "请再发送一次“转人工”来确认，或发送“取消”取消接线。ᗜ.ᗜ"]
           : ["Human support is not connected yet.", "Type “human support” again to confirm, or type “cancel” to cancel. ᗜ.ᗜ"]
@@ -3331,6 +3371,15 @@
       }
 
       if (supportIsTransferRequest(input)) {
+=======
+        if (supportIsAffirmativeTransfer(input) || /人工|客服|human|support/i.test(input)) {
+          supportTransferToZixi();
+          return;
+        }
+      }
+
+      if (/转人工/i.test(input)) {
+>>>>>>> 59d76e78eaab1d42ea62a87d1da92952e224252a
         supportRequestTransferToZixi();
         return;
       }
