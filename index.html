@@ -3588,20 +3588,11 @@
       return /摄像头|头像|表情|样子|长什么样|外貌|画风|图片|看起来|camera|avatar|look like|appearance|looks|expression/i.test(input);
     }
 
-    function supportLooksLikeCameraRequest(input) {
-      return /摄像头|头像|表情|样子|长什么样|camera|avatar|look like/i.test(input);
-    }
-
-
     function supportLooksLikeRealHumanTransferRequest(input) {
       const text = String(input || '').trim();
       if (!text) return false;
       if (/^(转人工|人工|真人客服|真正的人工|找真人|找人工|接人工|人工客服|human support|real human|real person)$/i.test(text)) return true;
       return /转.*(人工|真人)|找.*(人工|真人)|接.*(人工|真人)|human/i.test(text);
-    }
-
-    function supportLooksLikeCameraClose(input) {
-      return /关.*摄像头|关闭|关掉|不喜欢.*ai|不喜欢.*AI|不要图|文字头像|close.*camera|hide.*avatar/i.test(input);
     }
 
     function supportLooksLikeIdentityClaim(input) {
@@ -3612,85 +3603,11 @@
       return /你.*真人|你.*不是.*真人|真的假的|不是真人吗|你到底是不是.*(真人|ai|AI)|你是ai|你是AI|你不是人吗|你是谁|梓汐是谁|头像|摄像头|样子|长什么样|are you human|are you real|real person|not human|really human|really a person|who are you|avatar|camera|look like/i.test(input);
     }
 
-    function supportLocalZixiReply(input) {
-      const lang = supportLang();
-      const lower = input.toLowerCase();
-
-      if (supportLooksLikeRealHumanTransferRequest(input)) {
-        supportAppendMessage("zixi", lang === "zh"
-          ? "如果你是想找真正的人类客服，公开发布页这里暂时没有进一步的实时人工通道哦。我可以继续帮你说明下载、备份、版本和游戏内容；如果只是想回到汐bot，我也可以把基础问题交回给它。"
-          : "If you mean a real human support agent, this public release page does not currently have a further live human channel. I can keep helping with downloads, backups, versions, and game details; if you want Xibot back, I can hand basic questions back to it."
-        , { emotion: "serious" });
-        return;
-      }
-
-      if (supportLooksLikeCameraClose(input)) {
-        supportHideTyping();
-        supportCloseZixiCamera();
-        return;
-      }
-
-      if (supportLooksLikeCameraRequest(input)) {
-        supportHideTyping();
-        supportOpenZixiCamera("user-request");
-        return;
-      }
-
-      if (supportLooksLikeIdentityClaim(input)) {
-        supportAppendMessage("zixi", lang === "zh"
-          ? "诶——公开页面不能随便认老板的啦。我这里看不到可靠身份信息，所以先按普通访客流程接待哦。真的老板请走内部通道。(｀・ω・´)"
-          : "Hmm—on a public page I cannot verify identity claims. I will handle this as a normal visitor chat. The real boss should use the internal channel."
-        , { emotion: "boundary" });
-        return;
-      }
-
-      if (/老板|夏樟|sylvan|以饬|作者|creator|developer/.test(lower)) {
-        supportAppendMessage("zixi", lang === "zh"
-          ? "老板现在公开主名是夏樟 / Sylvan Xia；以饬是以前用过的旧称。这里我会称他为老板，不过公开页面里不会展开太多内部事情。"
-          : "The creator’s public name here is 夏樟 / Sylvan Xia. 以饬 is an older name. I call him the boss, but I do not expand private internal details on the public page."
-        , { emotion: "soft" });
-        return;
-      }
-
-      if (/你是谁|梓汐是谁|原型|真正的梓汐|who are you|prototype/.test(lower)) {
-        supportAppendMessage("zixi", lang === "zh"
-          ? "我是梓汐，Cyber Doggo 发布页的小客服。更私人的原型关系我知道，但不会在公开页面里一上来讲成设定报告啦。"
-          : "I am Zixi, the little support agent on the Cyber Doggo release page. I know my prototype background, but I will not turn it into a whole lore report on the public page."
-        , { emotion: "soft" });
-        return;
-      }
-
-      if (/下载|apk|exe|安装|download|install|微信/.test(lower)) {
-        supportAppendMessage("zixi", SUPPORT_FAQ.download[lang], { emotion: "checking" });
-        return;
-      }
-
-      if (/备份|存档|覆盖|卸载|backup|save|overwrite|uninstall/.test(lower)) {
-        supportAppendMessage("zixi", SUPPORT_FAQ.backup[lang], { emotion: "serious" });
-        return;
-      }
-
-      if (/没有|未实现|云存档|账号|音乐|多人|missing|cloud|account|music|multiplayer/.test(lower)) {
-        supportAppendMessage("zixi", SUPPORT_FAQ.missing[lang], { emotion: "serious" });
-        return;
-      }
-
-      if (/版本|更新|v0\.4\.1|version|update|hotfix/.test(lower)) {
-        supportAppendMessage("zixi", SUPPORT_FAQ.version[lang], { emotion: "checking" });
-        return;
-      }
-
-      if (/游戏|介绍|什么|理念|核心|doggo|what is|concept/.test(lower)) {
-        supportAppendMessage("zixi", SUPPORT_FAQ.what[lang], { emotion: "soft" });
-        return;
-      }
-
-      if (!ZIXI_API_ENDPOINT) {
-        supportAppendMessage("zixi", lang === "zh"
-          ? "我现在没有连接到 Cloudflare 或 Vercel 后端，所以只能回答下载、版本、备份、当前功能边界这些基础问题。后端接好之后，我就能更自由地聊天了。"
-          : "I am not connected to the Cloudflare or Vercel backend right now, so I can only answer basic questions about downloads, versions, backups, and feature boundaries. Once the backend is connected, I will be able to chat more freely."
-        , { emotion: "apologetic" });
-      }
+    function supportReportZixiBackendUnavailable() {
+      supportHideTyping();
+      supportAppendSystem(supportLang() === "zh"
+        ? "系统提示：梓汐后端暂时不可用。本轮不会由前端生成梓汐回复，也不会自动执行摄像头动作。"
+        : "System: Zixi backend is temporarily unavailable. The frontend will not generate a Zixi reply or run camera actions automatically.");
     }
 
 
@@ -3825,7 +3742,7 @@
 
     async function supportAskZixiApi(input, historyForApi = null) {
       if (!ZIXI_API_ENDPOINT) {
-        supportLocalZixiReply(input);
+        supportReportZixiBackendUnavailable();
         return;
       }
 
