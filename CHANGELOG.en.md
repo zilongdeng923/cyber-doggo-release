@@ -1,5 +1,50 @@
 # Cyber Doggo Changelog
 
+## v0.5.0 — 2026-06-06
+
+### Important notice
+- v0.5.0 is a large test release that touches adventures, backpack flow, item settlement, personality, memory, and old-save compatibility. Please export or share a save backup before updating.
+- Older saves may write missing weekly journals when first opened or continued. This is a compatibility process, not save corruption.
+- Long stories, StoryThread behaviour, absence weekly wording, title variety, horror / Cthulhu / super-unfold stories, and full English support are still planned for later builds.
+
+### Adventure system rewrite
+- Adventures now use a separate full-screen flow, with a backpack confirmation step before going out.
+- Final adventure titles are generated after the story resolves, reducing title/story mismatch.
+- Return buttons, loading dots, and the old adventure floating bubble have been cleaned up.
+- The ordinary adventure frame pool has been compressed into clearer event-driven cards, reducing weak pacing/ending cards in the main story pool.
+
+### Backpack and carried items
+- Backpack and item-cabinet layout have been reorganised for clearer ordinary item and memento management.
+- Players can carry ordinary items, consumables, or mementos before an adventure, or choose to bring nothing.
+- Carried items now act as Story Gravity: they can influence the day’s atmosphere, places, encounters, and story direction instead of merely being mentioned.
+- Mementos lean toward mood and tendency, while ordinary items can become concrete interactions or story echoes.
+
+### Item outcome and test-build confirmation
+- New adventure items are no longer added immediately. At the end of the adventure, the game settles whether they were kept, returned, transferred, consumed, lost, only observed, or unchanged.
+- Full-text item discovery can catch clearly kept items even if the story AI forgot to output structured itemSeeds.
+- Fixed animal-shaped objects being blocked by old keyword-based living-creature guards, such as a woven little dog being treated as a real dog.
+- Test-build confirmation dialogs appear for uncertain item ownership, suspected living/sentient entities, or high-risk changes to existing items.
+- Fixed a history-binding bug where item outcomes could be written into the wrong adventure record when titles repeated; outcomes now bind more strictly by adventureId / day.
+
+### Personality and memory loop
+- Added short-term personality `temporary`, so adventures, care, and absence can briefly affect the dog’s current state.
+- Temporary personality decays over time; long-term growth still settles slowly through diaries, weekly journals, and memoirs.
+- All personality consumers now read `effective = base + growth + temporary`.
+- Personality-settlement prompts were calibrated to reduce overusing dimensions such as poeticness merely because the text sounds lyrical.
+- Weekly catchup has been improved; older saves may write some missing weekly journals when continued.
+
+### Refactor and stability
+- Large parts of the old runtime have been split and reorganised for future maintenance.
+- Desktop and Android web assets and release metadata have been kept in sync.
+- Added more automated checks for adventures, items, backpack flow, personality, memory, settlement, and release metadata.
+- Normal adventure flow now avoids silently rewriting already-finalized past records.
+
+### Known issues
+- Long stories and StoryThreads are still experimental; ordinary adventures may still feel too daily or repetitive.
+- Title variety and story continuity need further tuning.
+- Weekly journals covering long absences may still contain imperfect wording such as implying the owner has already returned.
+- Cloud saves, accounts, automatic multi-device sync, comments/feedback forms, full English in-game support, and horror / Cthulhu / super-unfold stories are not finished yet.
+
 ## v0.4.1 — 2026-05-05
 
 ### Diary and natural day-transition stability hotfix
